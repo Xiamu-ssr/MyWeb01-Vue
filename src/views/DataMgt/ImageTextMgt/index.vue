@@ -79,14 +79,14 @@
             </el-row>
             <el-row>
               <el-col :span="12">
-                <el-form-item label="内容"><el-input v-model="createParams.text" :rows="5" type="textarea" placeholder="词短意长"></el-input></el-form-item>
+                <el-form-item label="内容"><el-input v-model="createParams.text" maxlength="256" :show-word-limit="true" resize="none" :rows="5" type="textarea" placeholder="词短意长"></el-input></el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="12">
                 <el-form-item label="时光快照墙">
                   <el-upload
-                      v-model:file-list="createParams.fileList"
+                      v-model:file-list="picList"
                       :action=uploadImgUrl
                       :data="{id:createParams.id}"
                       :headers="{ Authorization: 'Bearer ' + getToken() }"
@@ -133,7 +133,7 @@ import { getToken } from "@/utils/auth";
 import { Warning, Plus  } from '@element-plus/icons-vue'
 import { ElMessageBox } from 'element-plus'
 import {getCurrentInstance} from "vue";
-import { getId, deletePic } from "@/api/DataMgt/index"
+import { getId, deletePic, createImageText, cancelImageText, getList } from "@/api/DataMgt/index"
 
 const { proxy } = getCurrentInstance();
 //多选常量
@@ -183,7 +183,7 @@ const shortcuts = [
   },
 ]
 //查询结果
-const tableData=reactive([
+const tableData=ref([
   {id:"BN20231009", place:"苏州",date:"20230805",title:"久违的见面。很开心。"},
   {id:"BN20231010", place:"苏州",date:"20230907",title:"久违的见面。很开心。"},
   {id:"BN20231011", place:"南京",date:"20230904",title:"久违的见面。很开心。"},
@@ -198,10 +198,9 @@ const createParams = reactive({
   title:undefined,
   text:undefined,
   place:undefined,
-  date:undefined,
-  fileList: []
 })
 //图片展示
+const picList = ref([])
 const dialogImageUrl = ref('')
 const dialogVisible = ref(false)
 const uploadImgUrl = ref(import.meta.env.VITE_APP_BASE_API +'/DataMgt/uploadPic'); // 上传的图片服务器地址
@@ -214,7 +213,7 @@ const handlePicBeforeUpload= (file) => {
 const handleSuccess =(rp, file) =>{
   file.name = rp["msg"];
   // console.log(rp,file)
-  // console.log(createParams.fileList)
+  // console.log(picList)
 }
 //图片移除回调方法
 const handleRemove= (uploadFile, uploadFiles) => {
@@ -229,22 +228,25 @@ const handlePictureCardPreview = (uploadFile) => {
   dialogVisible.value = true
 }
 
-//提交
+//查询
 const submitSearch=()=>{
   console.log(queryParams)
+  getList(queryParams).then(rp=>{
+    tableData.value = rp.data;
+  })
 }
 
-const getCurrentTime=()=>{
-  let date = new Date();
-  let year = date.getFullYear();
-  let month = ("0" + (date.getMonth() + 1)).slice(-2);
-  let day = ("0" + date.getDate()).slice(-2);
-  let hours = ("0" + date.getHours()).slice(-2);
-  let minutes = ("0" + date.getMinutes()).slice(-2);
-  let seconds = ("0" + date.getSeconds()).slice(-2);
-  let formattedDate = year + month + day + hours + minutes + seconds;
-  return formattedDate;
-}
+// const getCurrentTime=()=>{
+//   let date = new Date();
+//   let year = date.getFullYear();
+//   let month = ("0" + (date.getMonth() + 1)).slice(-2);
+//   let day = ("0" + date.getDate()).slice(-2);
+//   let hours = ("0" + date.getHours()).slice(-2);
+//   let minutes = ("0" + date.getMinutes()).slice(-2);
+//   let seconds = ("0" + date.getSeconds()).slice(-2);
+//   let formattedDate = year + month + day + hours + minutes + seconds;
+//   return formattedDate;
+// }
 //创建
 const createNew=()=>{
   getId().then(rp=>{
@@ -256,23 +258,26 @@ const createNew=()=>{
 }
 //确认创建
 function confirmCreate() {
-  console.log(createParams.fileList)
-  proxy.$modal.msgSuccess("创建成功");
-  //clear
-  for (let c in createParams){
-    createParams[c] = undefined;
-  }
-  drawer.value = false
+  createImageText(createParams).then(rp=>{
+    proxy.$modal.msgSuccess("创建成功");
+    //clear
+    for (let c in createParams){
+      createParams[c] = undefined;
+    }
+    drawer.value = false
+  })
 }
 const handleClose = () => {
   ElMessageBox.confirm('确定退出"新建"?')
       .then(() => {
-        //clear
-        for (let c in createParams){
-          createParams[c] = undefined;
-        }
-        console.log(createParams)
-        drawer.value = false
+        cancelImageText(createParams.id).then(rp=>{
+          //clear
+          for (let c in createParams){
+            createParams[c] = undefined;
+          }
+          console.log(createParams)
+          drawer.value = false
+        })
       })
       .catch(() => {
         // catch error

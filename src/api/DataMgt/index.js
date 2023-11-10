@@ -24,3 +24,29 @@ export function deletePic(name){
         data:name
     })
 }
+
+//新建动态
+export function createImageText(params){
+    return request({
+        url: '/DataMgt/createImageText',
+        method: 'post',
+        data:params
+    })
+}
+
+//取消新建动态
+export function cancelImageText(params){
+    return request({
+        url: '/DataMgt/cancelImageText',
+        method: 'post',
+        data:params
+    })
+}
+
+export function getList(params){
+    return request({
+        url: '/DataMgt/getList',
+        method: 'post',
+        data:params
+    })
+}
