@@ -42,6 +42,8 @@ import ImagePreview from "@/components/ImagePreview"
 import TreeSelect from '@/components/TreeSelect'
 // 字典标签组件
 import DictTag from '@/components/DictTag'
+// 引入echarts
+import * as echarts from 'echarts'
 
 const app = createApp(App)
 
@@ -54,6 +56,7 @@ app.config.globalProperties.handleTree = handleTree
 app.config.globalProperties.addDateRange = addDateRange
 app.config.globalProperties.selectDictLabel = selectDictLabel
 app.config.globalProperties.selectDictLabels = selectDictLabels
+app.config.globalProperties.$echarts = echarts
 
 // 全局组件挂载
 app.component('DictTag', DictTag)

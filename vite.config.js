@@ -7,6 +7,7 @@ export default defineConfig(({ mode, command }) => {
   const env = loadEnv(mode, process.cwd())
   const { VITE_APP_ENV } = env
   return {
+    publicPath: './',
     // 部署生产环境和开发环境下的URL。
     // 默认情况下，vite 会假设你的应用是被部署在一个域名的根路径上
     // 例如 https://www.ruoyi.vip/。如果应用被部署在一个子路径上，你就需要用这个选项指定这个子路径。例如，如果你的应用被部署在 https://www.ruoyi.vip/admin/，则设置 baseUrl 为 /admin/。
@@ -26,12 +27,13 @@ export default defineConfig(({ mode, command }) => {
     // vite 相关配置
     server: {
       port: 80,
-      host: true,
+      host: '0.0.0.0',
       open: true,
       proxy: {
         // https://cn.vitejs.dev/config/#server-proxy
         '/dev-api': {
           target: 'http://localhost:8080',
+          // target: 'http://124.70.3.5:8080',
           changeOrigin: true,
           rewrite: (p) => p.replace(/^\/dev-api/, '')
         }
@@ -53,6 +55,9 @@ export default defineConfig(({ mode, command }) => {
           }
         ]
       }
-    }
+    },
+    devServer: {
+      https: true
+    },
   }
 })

@@ -123,7 +123,13 @@ aside {
 
 //main-container全局样式
 .app-container {
-  padding: 20px;
+  margin-top: 6vh;
+  margin-left: 24px;
+  margin-right: 24px;
+  margin-bottom: 8vh;
+  //box-shadow: 3px 0px 5px 3px #00000005,-3px 0px 5px 3px #00000005, 0px 3px 5px 3px #00000005,0px -3px 5px 3px #00000005;
+  //border-radius: 10px;
+  height: 80vh;
 }
 
 .components-container {
@@ -181,4 +187,24 @@ aside {
     vertical-align: middle;
     margin-bottom: 10px;
   }
+}
+
+//self 自定义样式
+.box-class{
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 3px 0px 5px 3px #00000005,-3px 0px 5px 3px #00000005, 0px 3px 5px 3px #00000005,0px -3px 5px 3px #00000005;
+}
+
+.form-header-search{
+  width: 100%;
+}
+.form-header-search .el-row {
+  width: 100%;
+}
+.form-header-search .el-input {
+  width: 100%;
+}
+.form-header-search .el-form-item__label {
+  width: 100px;
 }

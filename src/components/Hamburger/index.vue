@@ -14,6 +14,8 @@
 </template>
 
 <script setup>
+import {onMounted} from "vue";
+
 defineProps({
   isActive: {
     type: Boolean,
@@ -25,6 +27,9 @@ const emit = defineEmits()
 const toggleClick = () => {
   emit('toggleClick');
 }
+onMounted(()=>{
+  toggleClick();
+})
 </script>
 
 <style scoped>

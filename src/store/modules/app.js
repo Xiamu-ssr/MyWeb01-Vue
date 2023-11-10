@@ -17,7 +17,8 @@ const useAppStore = defineStore(
         if (this.sidebar.hide) {
           return false;
         }
-        this.sidebar.opened = !this.sidebar.opened
+        // this.sidebar.opened = !this.sidebar.opened
+        this.sidebar.opened = true;
         this.sidebar.withoutAnimation = withoutAnimation
         if (this.sidebar.opened) {
           Cookies.set('sidebarStatus', 1)
@@ -27,7 +28,8 @@ const useAppStore = defineStore(
       },
       closeSideBar({ withoutAnimation }) {
         Cookies.set('sidebarStatus', 0)
-        this.sidebar.opened = false
+        // this.sidebar.opened = false
+        this.sidebar.opened = true
         this.sidebar.withoutAnimation = withoutAnimation
       },
       toggleDevice(device) {
