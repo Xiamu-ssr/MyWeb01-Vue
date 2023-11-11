@@ -54,7 +54,7 @@
                 :icon="Warning"
                 icon-color="#ff0000"
                 title="这也是昔日的回忆，你确定要删除吗？"
-                @confirm="deleteOne"
+                @confirm="deleteOne(scope.row.id)"
             >
               <template #reference>
                 <el-button>删除</el-button>
@@ -125,6 +125,54 @@
         </div>
       </template>
     </el-drawer>
+
+<!--    查看-->
+    <el-dialog
+        :align-center="true"
+        center
+        v-model="drawer2"
+        :title="oneInfoView.id"
+        width="60%"
+    >
+      <el-card>
+        <el-row>
+          <el-col :span="24">
+            <span style="font-size: 32px;font-weight: bold; font-family: 楷体">{{ oneInfoView.title }}</span>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-tag size="large" round>{{ oneInfoView.place }}</el-tag>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-scrollbar max-height="400px" style="background: #3A71A855">
+              <el-image v-for="url in oneInfoView.images" :src="viewImgUrl+'/'+url.name" style="height: 50%;width: 50%"
+                        :preview-src-list="imgList">
+                <template #error>
+                  <div>
+                    <h2>Error</h2>
+                  </div>
+                </template>
+              </el-image>
+            </el-scrollbar>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <span style="font-size: 18px;font-family: 黑体">{{oneInfoView.text}}</span>
+          </el-col>
+        </el-row>
+      </el-card>
+      <template #footer>
+      <span class="dialog-footer">
+        <el-button type="primary" @click="drawer2 = false">
+          知道了
+        </el-button>
+      </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -133,7 +181,7 @@ import { getToken } from "@/utils/auth";
 import { Warning, Plus  } from '@element-plus/icons-vue'
 import { ElMessageBox } from 'element-plus'
 import {getCurrentInstance} from "vue";
-import { getId, deletePic, createImageText, cancelImageText, getList } from "@/api/DataMgt/index"
+import { getId, deletePic, createImageText, cancelImageText, getList, getImageTextById } from "@/api/DataMgt/index"
 
 const { proxy } = getCurrentInstance();
 //多选常量
@@ -183,15 +231,10 @@ const shortcuts = [
   },
 ]
 //查询结果
-const tableData=ref([
-  {id:"BN20231009", place:"苏州",date:"20230805",title:"久违的见面。很开心。"},
-  {id:"BN20231010", place:"苏州",date:"20230907",title:"久违的见面。很开心。"},
-  {id:"BN20231011", place:"南京",date:"20230904",title:"久违的见面。很开心。"},
-  {id:"BN20231012", place:"南京",date:"20231005",title:"久违的见面。很开心。"},
-  {id:"BN20231013", place:"天津",date:"20230903",title:"久违的见面。很开心。"}
-])
+const tableData=ref([])
 //抽屉
-const drawer = ref();
+const drawer = ref(false);
+const drawer2 = ref(false);
 //新建参数
 const createParams = reactive({
   id:undefined,
@@ -204,6 +247,13 @@ const picList = ref([])
 const dialogImageUrl = ref('')
 const dialogVisible = ref(false)
 const uploadImgUrl = ref(import.meta.env.VITE_APP_BASE_API +'/DataMgt/uploadPic'); // 上传的图片服务器地址
+
+//动态查看
+const oneInfoView = ref({
+})
+const viewImgUrl = ref(import.meta.env.VITE_APP_BASE_API +'/images'); // 上传的图片服务器地址
+const imgList = ref([])
+
 //图片上传前回调方法
 const handlePicBeforeUpload= (file) => {
   // console.log(file)
@@ -232,7 +282,16 @@ const handlePictureCardPreview = (uploadFile) => {
 const submitSearch=()=>{
   console.log(queryParams)
   getList(queryParams).then(rp=>{
-    tableData.value = rp.data;
+    tableData.value = [];
+    for (let r of rp.data){
+      console.log(r)
+      r["date"] = new Date(r["date"]);
+      r["date"] = r["date"].setHours(r["date"].getHours() - 14);
+      r["date"] = new Date(r["date"]).toLocaleString();
+      console.log(r)
+      tableData.value.push(r);
+    }
+    // tableData.value = rp.data;
   })
 }
 
@@ -285,14 +344,26 @@ const handleClose = () => {
 }
 //查看
 const viewOne=(id)=>{
-  proxy.$modal.msg("查看"+id);
+  getImageTextById(id).then(rp=>{
+    console.log(rp.data)
+    oneInfoView.value = rp.data
+    imgList.value = Array.from(oneInfoView.value['images']).map(i => {return viewImgUrl.value+'/'+i.name})
+    // console.log(imgList.value)
+    drawer2.value = true;
+  })
 }
 //删除
 const deleteOne=(id)=>{
-  proxy.$modal.msg("delete"+id);
+  cancelImageText(id).then(rp=>{
+    proxy.$modal.msg("delete"+id);
+    submitSearch();
+  })
 }
 
 </script>
 
 <style scoped>
+:deep(.el-dialog){
+  margin-top: auto !important;
+}
 </style>

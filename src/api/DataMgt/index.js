@@ -50,3 +50,10 @@ export function getList(params){
         data:params
     })
 }
+export function getImageTextById(id){
+    return request({
+        url: '/DataMgt/getImageTextById',
+        method: 'post',
+        data:id
+    })
+}
