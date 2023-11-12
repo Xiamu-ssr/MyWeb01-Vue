@@ -1,7 +1,4 @@
 import request from '@/utils/request'
-
-
-
 export function getId(){
     return request({
         url: '/DataMgt/getId',

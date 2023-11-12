@@ -14,9 +14,9 @@
     </el-row>
     <el-row :gutter="20" class="box-class" style="margin-top: 1vh">
       <el-col :span="8" v-for="f in fontList" style="padding: 5px" align="center">
-        <el-card :style="{'font-family':f, 'font-size':'32px', 'font-weight':fontBold}">
+        <el-card :style="{'font-family':f, 'font-size':'32px'}">
           <el-row>
-            <el-col :span="18">
+            <el-col :span="18" :style="{'font-weight':fontBold}">
               {{ f }}
             </el-col>
             <el-col :span="6">
