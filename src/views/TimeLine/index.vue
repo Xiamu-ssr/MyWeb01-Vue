@@ -37,7 +37,7 @@
         <el-col :span="4" :offset="10" align="center">
           <span style="font-size: 16px;font-family: Arial, sans-serif">地区</span>
           <el-divider direction="vertical" />
-          <el-select v-model="curPlace" style="width: 80px" @change="selectChange" clearable>
+          <el-select v-model="curPlace" style="width: 100px" @change="selectChange" clearable>
             <el-option v-for="p in selectOptions.place" :label="p.label" :value="p.value"></el-option>
           </el-select>
         </el-col>
@@ -63,7 +63,7 @@
                 </el-row>
                 <el-row>
                   <el-col :span="24">
-                    <el-tag size="large" round>{{ activity.place }}</el-tag>
+                    <el-tag size="large" round>{{ i2g[activity.place] }}</el-tag>
                   </el-col>
                 </el-row>
                 <el-row>
@@ -100,18 +100,15 @@
 <script setup name="TimeLine">
 import {onMounted} from "vue";
 import {getListByPlace} from "@/api/TimeLine";
+import { getIndex2Geo } from "@/api/DataMgt/index"
 import {MoreFilled} from "@element-plus/icons-vue";
 
 const viewImgUrl = ref(import.meta.env.VITE_APP_BASE_API +'/images'); // 上传的图片服务器地址
+const i2g = getIndex2Geo();
 const selectOptions = reactive({
-  place:[
-    {value:"01",label:"天津"},
-    {value:"02",label:"上海"},
-    {value:"03",label:"南京"},
-    {value:"04",label:"苏州"}
-  ]
+  place:[]
 })
-const curPlace = ref("01");
+const curPlace = ref("1");
 const activities = ref([])
 
 const getListByPlaceL=()=>{
@@ -143,6 +140,9 @@ const viewImg=()=>{
 
 onMounted(()=>{
   getListByPlaceL();
+  for (let index in i2g) {
+    selectOptions.place.push({label:i2g[index], value:index})
+  }
 })
 
 </script>

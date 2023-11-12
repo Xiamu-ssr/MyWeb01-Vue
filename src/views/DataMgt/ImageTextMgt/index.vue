@@ -5,7 +5,7 @@
         <el-row>
           <el-col :span="7">
             <el-form-item label="地区">
-              <el-select v-model="queryParams.place" clearable multiple collapse-tags>
+              <el-select v-model="queryParams.place" clearable multiple collapse-tags filterable placeholder="支持多选,搜索">
                 <el-option v-for="p in selectOptions.place" :label="p.label" :value="p.value"></el-option>
               </el-select>
             </el-form-item>
@@ -26,10 +26,10 @@
         </el-row>
         <el-row>
           <el-col :span="7">
-            <el-form-item label="标题"><el-input placeholder="支持模糊查询,正则表达式"></el-input></el-form-item>
+            <el-form-item label="标题"><el-input v-model="queryParams.title" placeholder="支持模糊查询,正则表达式"></el-input></el-form-item>
           </el-col>
           <el-col :span="7">
-            <el-form-item label="文本"><el-input placeholder="支持模糊查询,正则表达式"></el-input></el-form-item>
+            <el-form-item label="文本"><el-input v-model="queryParams.text" placeholder="支持模糊查询,正则表达式"></el-input></el-form-item>
           </el-col>
           <el-col :span="3" :offset="7">
             <el-button type="primary" plain @click="submitSearch">查询</el-button>
@@ -41,7 +41,11 @@
     <el-row class="box-class" style="margin-top: 1%; height: 79%">
       <el-table :data="tableData" stripe border >
         <el-table-column label="ID"  prop="id" sortable></el-table-column>
-        <el-table-column label="地区" prop="place" sortable></el-table-column>
+        <el-table-column label="地区" sortable>
+          <template #default="scope">
+            {{ i2g[scope.row.place] }}
+          </template>
+        </el-table-column>
         <el-table-column label="时间" prop="date"  sortable></el-table-column>
         <el-table-column label="标题" prop="title"></el-table-column>
         <el-table-column label="操作"              width="240px" fixed="right">
@@ -108,7 +112,7 @@
             <el-row>
               <el-col :span="12">
                 <el-form-item label="地区">
-                  <el-select v-model="createParams.place" clearable>
+                  <el-select v-model="createParams.place" clearable filterable placeholder="支持搜索">
                     <el-option v-for="p in selectOptions.place" :label="p.label" :value="p.value"></el-option>
                   </el-select>
                 </el-form-item>
@@ -142,7 +146,7 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-tag size="large" round>{{ oneInfoView.place }}</el-tag>
+            <el-tag size="large" round>{{ i2g[oneInfoView.place] }}</el-tag>
           </el-col>
         </el-row>
         <el-row>
@@ -180,19 +184,15 @@
 import { getToken } from "@/utils/auth";
 import { Warning, Plus  } from '@element-plus/icons-vue'
 import { ElMessageBox } from 'element-plus'
-import {getCurrentInstance} from "vue";
-import { getId, deletePic, createImageText, cancelImageText, getList, getImageTextById } from "@/api/DataMgt/index"
+import {getCurrentInstance, onMounted} from "vue";
+import { getId, deletePic, createImageText, cancelImageText, getList, getImageTextById, getIndex2Geo } from "@/api/DataMgt/index"
 
 const { proxy } = getCurrentInstance();
 //多选常量
 const selectOptions = reactive({
-  place:[
-    {value:"01",label:"天津"},
-    {value:"02",label:"上海"},
-    {value:"03",label:"南京"},
-    {value:"04",label:"苏州"}
-  ]
+  place:[]
 })
+const i2g = getIndex2Geo();
 //查询参数
 const queryParams = reactive({
   title:undefined,
@@ -359,6 +359,12 @@ const deleteOne=(id)=>{
     submitSearch();
   })
 }
+
+onMounted(()=>{
+  for (let index in i2g) {
+    selectOptions.place.push({label:i2g[index], value:index})
+  }
+})
 
 </script>
 

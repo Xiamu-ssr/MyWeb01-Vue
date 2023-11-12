@@ -130,7 +130,7 @@
         </el-row>
         <el-row style="margin-top: 2%; height: 86%">
           <el-col :span="24" class="box-class">
-            <div :ref="el => { charts[0] = el }" style="height: 100%;"></div>
+            <div ref="chart" style="height: 100%;"></div>
           </el-col>
         </el-row>
       </el-col>
@@ -167,108 +167,11 @@ import {  onMounted, ref, inject } from "vue";
 import SvgIcon from "@/components/SvgIcon/index.vue";
 // import * as echarts from "echarts";
 import { MoreFilled } from '@element-plus/icons-vue'
+import china from "@/assets/data/china.json"
+
 const { proxy } = getCurrentInstance()
 //通过ref获取html元素
-const info = ref();
-const charts = ref([])
-const options = ref([
-  {
-    title: {
-      text: 'Stacked Area Chart'
-    },
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-        type: 'cross',
-        label: {
-          backgroundColor: '#6a7985'
-        }
-      }
-    },
-    legend: {
-      data: ['Email', 'Union Ads', 'Video Ads', 'Direct', 'Search Engine']
-    },
-    toolbox: {
-      feature: {
-        saveAsImage: {}
-      }
-    },
-    grid: {
-      left: '3%',
-      right: '4%',
-      bottom: '3%',
-      containLabel: true
-    },
-    xAxis: [
-      {
-        type: 'category',
-        boundaryGap: false,
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-      }
-    ],
-    yAxis: [
-      {
-        type: 'value'
-      }
-    ],
-    series: [
-      {
-        name: 'Email',
-        type: 'line',
-        stack: 'Total',
-        areaStyle: {},
-        emphasis: {
-          focus: 'series'
-        },
-        data: [120, 132, 101, 134, 90, 230, 210]
-      },
-      {
-        name: 'Union Ads',
-        type: 'line',
-        stack: 'Total',
-        areaStyle: {},
-        emphasis: {
-          focus: 'series'
-        },
-        data: [220, 182, 191, 234, 290, 330, 310]
-      },
-      {
-        name: 'Video Ads',
-        type: 'line',
-        stack: 'Total',
-        areaStyle: {},
-        emphasis: {
-          focus: 'series'
-        },
-        data: [150, 232, 201, 154, 190, 330, 410]
-      },
-      {
-        name: 'Direct',
-        type: 'line',
-        stack: 'Total',
-        areaStyle: {},
-        emphasis: {
-          focus: 'series'
-        },
-        data: [320, 332, 301, 334, 390, 330, 320]
-      },
-      {
-        name: 'Search Engine',
-        type: 'line',
-        stack: 'Total',
-        label: {
-          show: true,
-          position: 'top'
-        },
-        areaStyle: {},
-        emphasis: {
-          focus: 'series'
-        },
-        data: [820, 932, 901, 934, 1290, 1330, 1320]
-      }
-    ]
-  },
-])
+const chart = ref()
 const activities = [
   {
     content: 'Custom icon',
@@ -298,20 +201,195 @@ const activities = [
     timestamp: '2018-04-03 20:46',
   },
 ]
+//数据区
 
-const setCharts=(index)=>{
-  // 渲染echarts的父元素
-  var infoEl = charts.value[index];
-  //  light dark
-  var userEc = proxy.$echarts.init(infoEl, "light");
-  var option = options.value[index];
-  userEc.setOption(option);
+const setCharts=()=>{
+
+  var myChart = proxy.$echarts.init(chart.value, "light");
+  proxy.$echarts.registerMap('china', china);
+  var option = {
+    series: [
+      {
+        type: "map",
+        map: 'china',
+        center: [104, 34],
+        zoom: 1.5,
+        roam: true,
+        name: "动态数量",
+        data: [
+          {
+            name: "北京市",
+            value: 21,
+          },
+          {
+            name: "天津市",
+            value: 12,
+          },
+          {
+            name: "上海市",
+            value: 99,
+          },
+          {
+            name: "重庆市",
+            value: 98,
+          },
+          {
+            name: "河北省",
+            value: 99,
+          },
+          {
+            name: "河南省",
+            value: 29,
+          },
+          {
+            name: "云南省",
+            value: 79,
+          },
+          {
+            name: "辽宁省",
+            value: 38,
+          },
+          {
+            name: "黑龙江省",
+            value: 4,
+          },
+          {
+            name: "湖南省",
+            value: 32,
+          },
+          {
+            name: "安徽省",
+            value: 84,
+          },
+          {
+            name: "山东省",
+            value: 72,
+          },
+          {
+            name: "新疆维吾尔自治区",
+            value: 99,
+          },
+          {
+            name: "江苏省",
+            value: 70,
+          },
+          {
+            name: "浙江省",
+            value: 85,
+          },
+          {
+            name: "江西省",
+            value: 11,
+          },
+          {
+            name: "湖北省",
+            value: 62,
+          },
+          {
+            name: "广西壮族自治区",
+            value: 13,
+          },
+          {
+            name: "甘肃省",
+            value: 74,
+          },
+          {
+            name: "山西省",
+            value: 78,
+          },
+          {
+            name: "内蒙古自治区",
+            value: 74,
+          },
+          {
+            name: "陕西省",
+            value: 40,
+          },
+          {
+            name: "吉林省",
+            value: 9,
+          },
+          {
+            name: "福建省",
+            value: 90,
+          },
+          {
+            name: "贵州省",
+            value: 57,
+          },
+          {
+            name: "广东省",
+            value: 6,
+          },
+          {
+            name: "青海省",
+            value: 52,
+          },
+          {
+            name: "西藏自治区",
+            value: 10,
+          },
+          {
+            name: "四川省",
+            value: 98,
+          },
+          {
+            name: "宁夏回族自治区",
+            value: 11,
+          },
+          {
+            name: "海南省",
+            value: 25,
+          },
+          {
+            name: "台湾省",
+            value: 86,
+          },
+          {
+            name: "香港特别行政区",
+            value: 8,
+          },
+          {
+            name: "澳门特别行政区",
+            value: 50,
+          },
+        ],
+      },
+    ],
+    tooltip: {
+      trigger: "item",
+    },
+    visualMap: {
+      left: "right",
+      min: 0,
+      max: 100,
+      inRange: {
+        color: [
+          "#313695",
+          "#4575b4",
+          "#74add1",
+          "#abd9e9",
+          "#e0f3f8",
+          "#ffffbf",
+          "#fee090",
+          "#fdae61",
+          "#f46d43",
+          "#d73027",
+          "#a50026",
+        ],
+      },
+      text: ["High", "Low"],
+      calculable: true,
+    },
+  };
+  myChart.setOption(option);
+  myChart.on('click', function (params) {
+    console.log(params);
+  });
 }
 
 onMounted(() => {
-  for (var i=0; i<charts.value.length; ++i){
-    setCharts(i);
-  }
+  setCharts();
 });
 </script>
 
