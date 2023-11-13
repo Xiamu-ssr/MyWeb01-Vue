@@ -100,20 +100,22 @@
 <script setup name="TimeLine">
 import {onMounted} from "vue";
 import {getListByPlace} from "@/api/TimeLine";
-import { getIndex2Geo } from "@/api/DataMgt/index"
+import { getIndex2Geo, getGeo2Index } from "@/api/DataMgt/index"
 import {MoreFilled} from "@element-plus/icons-vue";
 
 const viewImgUrl = ref(import.meta.env.VITE_APP_BASE_API +'/images'); // 上传的图片服务器地址
+//index To geo place Map
 const i2g = getIndex2Geo();
+const g2i = getGeo2Index();
 const selectOptions = reactive({
   place:[]
 })
-const curPlace = ref("1");
+const curPlace = ref(history.state.place);
 const activities = ref([])
 
 const getListByPlaceL=()=>{
   activities.value = [];
-  getListByPlace(curPlace.value).then(rp=>{
+  getListByPlace(g2i[curPlace.value]).then(rp=>{
     console.log(rp.data)
     // let colors = ["blue", "green", "red", "orange"];
     let types = ["danger", "primary", "success", "info", "warning"];

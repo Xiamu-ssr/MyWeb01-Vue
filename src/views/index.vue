@@ -168,8 +168,11 @@ import SvgIcon from "@/components/SvgIcon/index.vue";
 // import * as echarts from "echarts";
 import { MoreFilled } from '@element-plus/icons-vue'
 import china from "@/assets/data/china.json"
+import {useRouter} from "vue-router";
+import { getAllData } from "@/api/home"
 
 const { proxy } = getCurrentInstance()
+const router = useRouter();
 //通过ref获取html元素
 const chart = ref()
 const activities = [
@@ -385,10 +388,14 @@ const setCharts=()=>{
   myChart.setOption(option);
   myChart.on('click', function (params) {
     console.log(params);
+    router.push({path: "/TimeLine", state: {place: params.name}})
   });
 }
 
 onMounted(() => {
+  getAllData().then(rp=>{
+    console.log(rp.data)
+  })
   setCharts();
 });
 </script>
