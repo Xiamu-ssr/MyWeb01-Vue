@@ -110,12 +110,12 @@ const g2i = getGeo2Index();
 const selectOptions = reactive({
   place:[]
 })
-const curPlace = ref(history.state.place);
+const curPlace = ref();
 const activities = ref([])
 
 const getListByPlaceL=()=>{
   activities.value = [];
-  getListByPlace(g2i[curPlace.value]).then(rp=>{
+  getListByPlace(curPlace.value).then(rp=>{
     console.log(rp.data)
     // let colors = ["blue", "green", "red", "orange"];
     let types = ["danger", "primary", "success", "info", "warning"];
@@ -141,6 +141,11 @@ const viewImg=()=>{
 }
 
 onMounted(()=>{
+  if(history.state.place != null){
+    curPlace.value = g2i[history.state.place];
+  }else {
+    curPlace.value = "1";
+  }
   getListByPlaceL();
   for (let index in i2g) {
     selectOptions.place.push({label:i2g[index], value:index})
