@@ -197,7 +197,7 @@
 	</div>
 </template>
 
-<script name="ImageTextMgt" setup>
+<script name="MessageMgt" setup>
 import {getToken} from "@/utils/auth";
 import {Plus, Warning} from '@element-plus/icons-vue'
 import {ElMessageBox} from 'element-plus'
