@@ -45,7 +45,7 @@
 								<el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"/>
 							</el-col>
 							<el-col :span="8" style="align-items: center;display: flex;">
-								<el-tag size="large" :type="m.nameType" :effect="m.nameEffect">{{ m.name }}</el-tag>
+								<el-tag size="large" :type="m.nameColor" :effect="m.nameEffect">{{ m.name }}</el-tag>
 							</el-col>
 						</el-row>
 						<el-divider style="margin-top: 6px;margin-bottom: 12px"></el-divider>
@@ -74,7 +74,7 @@
 					<el-input v-model="queryParams.name" style="width: 220px" :maxlength="12" :minlength="1" show-word-limit></el-input>
 				</el-form-item>
 				<el-form-item label="昵称颜色">
-					<el-radio-group v-model="queryParams.nameType">
+					<el-radio-group v-model="queryParams.nameColor">
 						<el-radio-button label="蓝色"/>
 						<el-radio-button label="黄色" />
 						<el-radio-button label="绿色" />
@@ -88,9 +88,7 @@
 					</el-radio-group>
 				</el-form-item>
 				<el-form-item label="留言内容">
-					<el-radio-group v-model="queryParams.nameEffect">
-						<el-input type="textarea" :rows="2" v-model="queryParams.text" style="width: 220px" :maxlength="12" :minlength="1" show-word-limit resize="none"></el-input>
-					</el-radio-group>
+					<el-input type="textarea" :rows="2" v-model="queryParams.text" style="width: 220px" :maxlength="12" :minlength="1" show-word-limit resize="none"></el-input>
 				</el-form-item>
 			</el-form>
 			<template #footer>
@@ -109,108 +107,109 @@
 import { ChatLineRound, Male, Calendar } from '@element-plus/icons-vue'
 import {reactive, ref} from "vue";
 import { ElMessageBox } from 'element-plus'
+import { create } from "@/api/MessageBoard/index"
 
 const messages = ref([
 	{
 		text:"上课了！",
 		name:"陌生人",
 		time: new Date(),
-		nameType:"info",
+		nameColor:"info",
 		nameEffect:"dark"
 	},
 	{
 		text:"你，站起来回答这个问题。",
 		name:"陌生人",
 		time: new Date(),
-		nameType:"primary",
+		nameColor:"primary",
 		nameEffect:"light"
 	},
 	{
 		text:"汗流浃背了吧老弟",
 		name:"陌生人",
 		time: new Date(),
-		nameType:"success",
+		nameColor:"success",
 		nameEffect:"dark"},
 	{
 		text:"EDG牛逼！！",
 		name:"陌生人",
 		time: new Date(),
-		nameType:"danger",
+		nameColor:"danger",
 		nameEffect:"light"
 	},
 	{
 		text:"up！up！up！冲冲冲!",
 		name:"陌生人",
 		time: new Date(),
-		nameType:"warning",
+		nameColor:"warning",
 		nameEffect:"dark"
 	},
 	{
 		text:"上课了！",
 		name:"陌生人",
 		time: new Date(),
-		nameType:"info",
+		nameColor:"info",
 		nameEffect:"dark"
 	},
 	{
 		text:"你，站起来回答这个问题。",
 		name:"陌生人",
 		time: new Date(),
-		nameType:"primary",
+		nameColor:"primary",
 		nameEffect:"light"
 	},
 	{
 		text:"汗流浃背了吧老弟",
 		name:"陌生人",
 		time: new Date(),
-		nameType:"success",
+		nameColor:"success",
 		nameEffect:"dark"},
 	{
 		text:"EDG牛逼！！",
 		name:"陌生人",
 		time: new Date(),
-		nameType:"danger",
+		nameColor:"danger",
 		nameEffect:"light"
 	},
 	{
 		text:"up！up！up！冲冲冲!",
 		name:"陌生人",
 		time: new Date(),
-		nameType:"warning",
+		nameColor:"warning",
 		nameEffect:"dark"
 	},
 	{
 		text:"上课了！",
 		name:"陌生人",
 		time: new Date(),
-		nameType:"info",
+		nameColor:"info",
 		nameEffect:"dark"
 	},
 	{
 		text:"你，站起来回答这个问题。",
 		name:"陌生人",
 		time: new Date(),
-		nameType:"primary",
+		nameColor:"primary",
 		nameEffect:"light"
 	},
 	{
 		text:"汗流浃背了吧老弟",
 		name:"陌生人",
 		time: new Date(),
-		nameType:"success",
+		nameColor:"success",
 		nameEffect:"dark"},
 	{
 		text:"EDG牛逼！！",
 		name:"陌生人",
 		time: new Date(),
-		nameType:"danger",
+		nameColor:"danger",
 		nameEffect:"light"
 	},
 	{
 		text:"up！up！up！冲冲冲!",
 		name:"陌生人",
 		time: new Date(),
-		nameType:"warning",
+		nameColor:"warning",
 		nameEffect:"dark"
 	},
 ])
@@ -219,7 +218,7 @@ const queryParams = reactive({
 	text:undefined,
 	name:undefined,
 	time: new Date(),
-	nameType:undefined,
+	nameColor:undefined,
 	nameEffect:undefined
 })
 
@@ -235,8 +234,11 @@ const handleClose = (done) => {
 
 //提交新的留言
 const submit=()=>{
-	dialogVisible.value = false;
 	console.log(queryParams)
+	create(queryParams).then(rp=>{
+		console.log(rp)
+		dialogVisible.value = false;
+	})
 }
 
 </script>
