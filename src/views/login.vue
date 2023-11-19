@@ -1,7 +1,7 @@
 <template>
-  <div class="login">
+  <div class="login" v-show="false">
     <el-form ref="loginRef" :model="loginForm" :rules="loginRules" class="login-form">
-      <h3 class="title">若依后台管理系统</h3>
+      <h3 class="title">管理系统</h3>
       <el-form-item prop="username">
         <el-input
           v-model="loginForm.username"
@@ -163,12 +163,12 @@ function getCookie() {
 // handleLogin();
 onMounted(()=>{
 	getCode();
-	getCookie();
+	// getCookie();
 	handleLogin();
 })
 </script>
 
-<style lang='scss' scoped>
+<style scoped>
 .login {
   display: flex;
   justify-content: center;
