@@ -309,10 +309,10 @@ const submitSearch = () => {
 		tableData.value = [];
 		for (let r of rp.data) {
 			console.log(r)
-			r["date"] = new Date(r["date"]);
-			r["date"] = r["date"].setHours(r["date"].getHours() - 14);
-			r["date"] = new Date(r["date"]).toLocaleString();
-			console.log(r)
+			// r["date"] = new Date(r["date"]);
+			// r["date"] = r["date"].setHours(r["date"].getHours() - 14);
+			// r["date"] = new Date(r["date"]).toLocaleString();
+			// console.log(r)
 			tableData.value.push(r);
 		}
 		// tableData.value = rp.data;

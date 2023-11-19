@@ -1,8 +1,11 @@
 <template>
 	<div class="homePage">
-		<el-row class="box-class" style="height: 14%">
+		<el-row class="box-class" style="height: 10%">
 			<el-col :span="4" :offset="2">
-				<el-statistic title="Daily active users" :value="268500" />
+				<el-statistic title="留言人数" :value="topData.peopleNum" />
+			</el-col>
+			<el-col :span="4">
+				<el-statistic title="留言字数" :value="topData.textNum" />
 			</el-col>
 			<el-col :span="4">
 				<el-statistic :value="138">
@@ -18,10 +21,7 @@
 				</el-statistic>
 			</el-col>
 			<el-col :span="4">
-				<el-statistic title="Total Transactions" :value="172000" />
-			</el-col>
-			<el-col :span="4">
-				<el-statistic title="Feedback number" :value="562">
+				<el-statistic title="留言数量" :value="topData.messageNum">
 					<template #suffix>
 						<el-icon style="vertical-align: -0.125em">
 							<ChatLineRound />
@@ -29,7 +29,7 @@
 					</template>
 				</el-statistic>
 			</el-col>
-			<el-col span="4">
+			<el-col :span="4">
 				<el-row justify="space-between" style="align-items: center; height: 100%">
 					<el-button type="primary" plain @click="dialogVisible = true">留下你的言语</el-button>
 					<el-button>去年今月</el-button>
@@ -54,7 +54,7 @@
 						</el-row>
 						<el-row justify="end" style="margin-top: 24px">
 							<el-col :span="10" style="align-items: center;display: flex">
-								<el-icon size="20"><Calendar /></el-icon>&nbsp;&nbsp;&nbsp;&nbsp;{{ m.time.toLocaleDateString() }}
+								<el-icon size="20"><Calendar /></el-icon>&nbsp;&nbsp;&nbsp;&nbsp;{{ (m.createTime+"").substring(0,10) }}
 							</el-col>
 						</el-row>
 					</el-card>
@@ -69,33 +69,54 @@
 			:before-close="handleClose"
 			align-center
 		>
-			<el-form class="box-class" :model="queryParams" label-width="100px">
-				<el-form-item label="昵称">
+			<el-form ref="ruleFormRef" class="box-class" :model="queryParams" label-width="100px" :rules="rules">
+				<el-form-item label="昵称" prop="name">
 					<el-input v-model="queryParams.name" style="width: 220px" :maxlength="12" :minlength="1" show-word-limit></el-input>
 				</el-form-item>
-				<el-form-item label="昵称颜色">
-					<el-radio-group v-model="queryParams.nameColor">
-						<el-radio-button label="蓝色"/>
-						<el-radio-button label="黄色" />
-						<el-radio-button label="绿色" />
-						<el-radio-button label="红色" />
-					</el-radio-group>
+				<el-form-item label="昵称颜色" prop="nameColor">
+					<el-select v-model="queryParams.nameColor">
+						<el-option value="" label="蓝色"></el-option>
+						<el-option value="warning" label="黄色"></el-option>
+						<el-option value="success" label="绿色"></el-option>
+						<el-option value="danger"  label="红色"></el-option>
+					</el-select>
 				</el-form-item>
-				<el-form-item label="昵称深浅">
-					<el-radio-group v-model="queryParams.nameEffect">
-						<el-radio-button label="深色"/>
-						<el-radio-button label="浅色" />
-					</el-radio-group>
+				<el-form-item label="昵称深浅" prop="nameEffect">
+					<el-select v-model="queryParams.nameEffect">
+						<el-option value="light" label="明亮"></el-option>
+						<el-option value="dark"  label="深沉"></el-option>
+						<el-option value="plain" label="空心"></el-option>
+					</el-select>
 				</el-form-item>
-				<el-form-item label="留言内容">
-					<el-input type="textarea" :rows="2" v-model="queryParams.text" style="width: 220px" :maxlength="12" :minlength="1" show-word-limit resize="none"></el-input>
+				<el-form-item label="留言内容" prop="text">
+					<el-input type="textarea" :rows="3" v-model="queryParams.text" style="width: 220px" :maxlength="32" :minlength="1" show-word-limit resize="none"></el-input>
 				</el-form-item>
 			</el-form>
+			<el-divider></el-divider>
+			<el-card style="border-radius: 10px; width: 380px; align-items: center">
+				<el-row justify="center" style="margin: 0;padding:0">
+					<el-col :span="8">
+						<el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"/>
+					</el-col>
+					<el-col :span="8" style="align-items: center;display: flex;">
+						<el-tag size="large" :type="queryParams.nameColor" :effect="queryParams.nameEffect">{{ queryParams.name }}</el-tag>
+					</el-col>
+				</el-row>
+				<el-divider style="margin-top: 6px;margin-bottom: 12px"></el-divider>
+				<el-row>
+					<span style="font-family: '微軟正黑體';font-weight: bold;font-size: 24px">{{ queryParams.text }}</span>
+				</el-row>
+				<el-row justify="end" style="margin-top: 24px">
+					<el-col :span="10" style="align-items: center;display: flex">
+						<el-icon size="20"><Calendar /></el-icon>&nbsp;&nbsp;&nbsp;&nbsp;{{ new Date().toLocaleDateString() }}
+					</el-col>
+				</el-row>
+			</el-card>
 			<template #footer>
 				<span class="dialog-footer">
-					<el-button @click="dialogVisible = false">Cancel</el-button>
-					<el-button type="primary" @click="submit">
-					  	Confirm
+					<el-button @click="dialogVisible = false">取消创建</el-button>
+					<el-button type="primary" @click="submit(ruleFormRef)">
+					  	确定
 					</el-button>
 				</span>
 			</template>
@@ -103,127 +124,46 @@
 	</div>
 </template>
 
-<script setup>
+<script setup name="MessageBoard">
 import { ChatLineRound, Male, Calendar } from '@element-plus/icons-vue'
-import {reactive, ref} from "vue";
+import {getCurrentInstance, onMounted, reactive, ref} from "vue";
 import { ElMessageBox } from 'element-plus'
-import { create } from "@/api/MessageBoard/index"
+import { create, getList, getTopData } from "@/api/MessageBoard"
 
-const messages = ref([
-	{
-		text:"上课了！",
-		name:"陌生人",
-		time: new Date(),
-		nameColor:"info",
-		nameEffect:"dark"
-	},
-	{
-		text:"你，站起来回答这个问题。",
-		name:"陌生人",
-		time: new Date(),
-		nameColor:"primary",
-		nameEffect:"light"
-	},
-	{
-		text:"汗流浃背了吧老弟",
-		name:"陌生人",
-		time: new Date(),
-		nameColor:"success",
-		nameEffect:"dark"},
-	{
-		text:"EDG牛逼！！",
-		name:"陌生人",
-		time: new Date(),
-		nameColor:"danger",
-		nameEffect:"light"
-	},
-	{
-		text:"up！up！up！冲冲冲!",
-		name:"陌生人",
-		time: new Date(),
-		nameColor:"warning",
-		nameEffect:"dark"
-	},
-	{
-		text:"上课了！",
-		name:"陌生人",
-		time: new Date(),
-		nameColor:"info",
-		nameEffect:"dark"
-	},
-	{
-		text:"你，站起来回答这个问题。",
-		name:"陌生人",
-		time: new Date(),
-		nameColor:"primary",
-		nameEffect:"light"
-	},
-	{
-		text:"汗流浃背了吧老弟",
-		name:"陌生人",
-		time: new Date(),
-		nameColor:"success",
-		nameEffect:"dark"},
-	{
-		text:"EDG牛逼！！",
-		name:"陌生人",
-		time: new Date(),
-		nameColor:"danger",
-		nameEffect:"light"
-	},
-	{
-		text:"up！up！up！冲冲冲!",
-		name:"陌生人",
-		time: new Date(),
-		nameColor:"warning",
-		nameEffect:"dark"
-	},
-	{
-		text:"上课了！",
-		name:"陌生人",
-		time: new Date(),
-		nameColor:"info",
-		nameEffect:"dark"
-	},
-	{
-		text:"你，站起来回答这个问题。",
-		name:"陌生人",
-		time: new Date(),
-		nameColor:"primary",
-		nameEffect:"light"
-	},
-	{
-		text:"汗流浃背了吧老弟",
-		name:"陌生人",
-		time: new Date(),
-		nameColor:"success",
-		nameEffect:"dark"},
-	{
-		text:"EDG牛逼！！",
-		name:"陌生人",
-		time: new Date(),
-		nameColor:"danger",
-		nameEffect:"light"
-	},
-	{
-		text:"up！up！up！冲冲冲!",
-		name:"陌生人",
-		time: new Date(),
-		nameColor:"warning",
-		nameEffect:"dark"
-	},
-])
+const { proxy } = getCurrentInstance()
+//顶部数据
+const topData = reactive({
+	peopleNum:0,
+	textNum:0,
+	messageNum: 0
+})
+//留言数据
+const messages = ref([])
+//新建
 const dialogVisible = ref(false)
+const ruleFormRef = ref()
 const queryParams = reactive({
 	text:undefined,
 	name:undefined,
 	time: new Date(),
-	nameColor:undefined,
-	nameEffect:undefined
+	nameColor:"",
+	nameEffect:"light"
+})
+const rules = reactive({
+	text:[
+		{ required: true, message: 'Please input', trigger: 'blur' },
+		{ min: 1, max: 32, message: 'Length should be 1 to 32', trigger: 'blur' },
+	],
+	name:[
+		{ required: true, message: 'Please input', trigger: 'blur' },
+		{ min: 1, max: 16, message: 'Length should be 1 to 16', trigger: 'blur' },
+	],
+	nameColor:[{ required: false, message: 'Please input', trigger: 'blur' }],
+	nameEffect:[{ required: true, message: 'Please input', trigger: 'blur' }]
 })
 
 const handleClose = (done) => {
-	ElMessageBox.confirm('Are you sure to close this dialog?')
+	ElMessageBox.confirm('你要退出留言新建界面吗?')
 		.then(() => {
 			done()
 		})
@@ -233,13 +173,51 @@ const handleClose = (done) => {
 }
 
 //提交新的留言
-const submit=()=>{
-	console.log(queryParams)
-	create(queryParams).then(rp=>{
-		console.log(rp)
+const submit= async(formEl)=>{
+	if (!formEl) return
+	await formEl.validate((valid, fields) => {
+		if (valid) {
+			console.log(queryParams)
+			create(queryParams).then(rp=>{
+				if (rp["code"] === 200){
+					proxy.$modal.alertSuccess("留言星已收到您的留言，待管理员审核后方可展示。")
+				}else {
+					proxy.$modal.msgSuccess("创建失败");
+				}
+				getListL()
+			})
+		} else {
+			console.log('error submit!', fields)
+		}
 		dialogVisible.value = false;
 	})
 }
+
+//获取留言数据
+const getListL=()=>{
+	getList({status:"1"}).then(rp=>{
+		if (rp["code"] === 200){
+			messages.value = rp.data
+			proxy.$modal.msgSuccess("已与留言星建立连接--..Success..");
+		}else {
+			proxy.$modal.msgSuccess("Fail:Please Connect Developer");
+		}
+
+	})
+}
+//获取顶部数据
+const getTopDataL=()=>{
+	getTopData().then(rp=>{
+		topData.messageNum = rp["data"]["messageNum"];
+		topData.textNum = rp["data"]["textNum"];
+		topData.peopleNum = rp["data"]["peopleNum"];
+	})
+}
+
+onMounted(()=>{
+	getListL()
+	getTopDataL()
+})
 
 </script>
 

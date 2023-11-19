@@ -69,6 +69,7 @@ import { getCodeImg } from "@/api/login";
 import Cookies from "js-cookie";
 import { encrypt, decrypt } from "@/utils/jsencrypt";
 import useUserStore from '@/store/modules/user'
+import {onMounted} from "vue";
 
 const userStore = useUserStore()
 const route = useRoute();
@@ -76,9 +77,9 @@ const router = useRouter();
 const { proxy } = getCurrentInstance();
 
 const loginForm = ref({
-  username: "admin",
-  password: "admin123",
-  rememberMe: false,
+  username: "fk",
+  password: "123456",
+  rememberMe: true,
   code: "",
   uuid: ""
 });
@@ -92,7 +93,7 @@ const loginRules = {
 const codeUrl = ref("");
 const loading = ref(false);
 // 验证码开关
-const captchaEnabled = ref(true);
+const captchaEnabled = ref(false);
 // 注册开关
 const register = ref(false);
 const redirect = ref(undefined);
@@ -158,8 +159,13 @@ function getCookie() {
   };
 }
 
-getCode();
-getCookie();
+
+// handleLogin();
+onMounted(()=>{
+	getCode();
+	getCookie();
+	handleLogin();
+})
 </script>
 
 <style lang='scss' scoped>
