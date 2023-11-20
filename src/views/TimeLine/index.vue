@@ -5,7 +5,7 @@
 			<el-row>
 				<el-col :span="24">
 					<div class="image-container">
-						<el-image fit="contain" src="src/assets/images/topHome.png"></el-image>
+						<el-image fit="contain" :src="topHome"></el-image>
 						<div class="overlay-text">
 							<el-row>
 								<el-col :span="24">
@@ -106,6 +106,8 @@
 import {onMounted} from "vue";
 import {getListByPlace} from "@/api/TimeLine";
 import {getGeo2Index, getIndex2Geo} from "@/api/DataMgt/index"
+
+import topHome from "@/assets/images/topHome.png"
 
 const viewImgUrl = ref(import.meta.env.VITE_APP_BASE_API + '/images'); // 上传的图片服务器地址
 //index To geo place Map

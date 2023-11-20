@@ -58,14 +58,12 @@
 					<el-divider></el-divider>
 				</el-row>
 				<el-row>
-					<el-descriptions column="1">
-						<el-descriptions-item label="Username">Kmo Dragon</el-descriptions-item>
-						<el-descriptions-item label="Telephone">+86 17264466637</el-descriptions-item>
-						<el-descriptions-item label="Place">Suzhou</el-descriptions-item>
-						<el-descriptions-item label="Remarks">
-							<el-tag size="small">PManager</el-tag>
-						</el-descriptions-item>
-						<el-descriptions-item label="Email">mumu2663@163.com</el-descriptions-item>
+					<el-descriptions column="1" >
+						<el-descriptions-item label="Username">		Kmo Dragon</el-descriptions-item>
+						<el-descriptions-item label="Telephone">	+86 17264466637</el-descriptions-item>
+						<el-descriptions-item label="Place">		Suzhou</el-descriptions-item>
+						<el-descriptions-item label="Remarks">		<el-tag size="small">PManager</el-tag></el-descriptions-item>
+						<el-descriptions-item label="Email">		mumu2663@163.com</el-descriptions-item>
 					</el-descriptions>
 				</el-row>
 				<el-row style="margin-top: 3vh">
@@ -179,6 +177,7 @@
 					</el-col>
 				</el-row>
 			</el-col>
+			<!--	第三列	-->
 			<el-col :span="6" class="box-class">
 				<el-row style="font-size: 24px">User Activity Timeline</el-row>
 				<el-row>
@@ -207,6 +206,9 @@
 				</el-row>
 			</el-col>
 		</el-row>
+		<div class="div_foot">
+			<a href="https://beian.miit.gov.cn/" target="_blank"><span>陕ICP备2023015443号</span></a>
+		</div>
 	</div>
 </template>
 <script name="Index" setup>
@@ -339,5 +341,19 @@ onMounted(() => {
 	padding: 0px;
 	margin-top: 10px;
 	margin-bottom: 10px;
+}
+:deep(.el-descriptions__body){
+	background-color: #00000000
+}
+:deep(.div_foot){
+	bottom: 0px;
+    position: absolute;
+	height: 50px;
+	text-align: center;
+	line-height: 50px;
+	width: 100%;
+	font-size: 14px;
+	font-family: "微軟正黑體";
+	color: #000000bb;
 }
 </style>

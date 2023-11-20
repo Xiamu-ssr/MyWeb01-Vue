@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ 'has-logo': showLogo }"  :style="{ backgroundColor: sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground }" style="background-image: url('src/assets/images/sidebar.png')">
+  <div class="backgroundimage" :class="{ 'has-logo': showLogo }"  :style="{ backgroundColor: sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground }" >
     <logo style="background: #ffffff00" v-if="showLogo" :collapse="isCollapse" />
     <el-scrollbar :class="sideTheme" wrap-class="scrollbar-wrapper">
       <el-menu
@@ -54,5 +54,7 @@ const activeMenu = computed(() => {
 </script>
 
 <style scoped>
-
+.backgroundimage{
+	background-image: url('@/assets/images/sidebar.png');
+}
 </style>
