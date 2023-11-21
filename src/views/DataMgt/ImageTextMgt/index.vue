@@ -319,17 +319,6 @@ const submitSearch = () => {
 	})
 }
 
-// const getCurrentTime=()=>{
-//   let date = new Date();
-//   let year = date.getFullYear();
-//   let month = ("0" + (date.getMonth() + 1)).slice(-2);
-//   let day = ("0" + date.getDate()).slice(-2);
-//   let hours = ("0" + date.getHours()).slice(-2);
-//   let minutes = ("0" + date.getMinutes()).slice(-2);
-//   let seconds = ("0" + date.getSeconds()).slice(-2);
-//   let formattedDate = year + month + day + hours + minutes + seconds;
-//   return formattedDate;
-// }
 //创建
 const createNew = () => {
 	getId().then(rp => {
@@ -349,6 +338,7 @@ function confirmCreate() {
 			createParams[c] = undefined;
 		}
 		drawer.value = false
+		submitSearch();
 	})
 }
 
@@ -392,6 +382,7 @@ onMounted(() => {
 	for (let index in i2g) {
 		selectOptions.place.push({label: i2g[index], value: index})
 	}
+	submitSearch();
 })
 
 </script>

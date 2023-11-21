@@ -226,7 +226,7 @@ const i2g = getIndex2Geo();
 const g2i = getGeo2Index();
 const router = useRouter();
 //通过ref获取html元素
-const activities = [
+const activities = ref([
 	{
 		content: 'Custom icon',
 		timestamp: '2018-04-12 20:46',
@@ -254,7 +254,7 @@ const activities = [
 		content: 'Default node',
 		timestamp: '2018-04-03 20:46',
 	},
-]
+])
 const chart = ref()
 const allData = reactive({
 	programs: 0,
@@ -324,9 +324,18 @@ onMounted(() => {
 				allData.geo.push({name: i2g[key], value: 0})
 			}
 		}
+		setCharts();
 		//转化cards数据
 		allData.cards = rp.data["fourCards"]
-		setCharts();
+		//转化最新动态
+		activities.value = []
+		rp.data["curTimeLine"].forEach(tmp=>{
+			console.log(tmp)
+			let activity = {}
+			activity["timestamp"] = tmp["createTime"]
+			activity["content"] = tmp["title"]
+			activities.value.push(activity)
+		})
 	})
 });
 </script>
