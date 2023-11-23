@@ -73,21 +73,14 @@
 					<el-divider></el-divider>
 				</el-row>
 				<el-row>
-					<el-tag class="mx-1" effect="light" round size="large" style="margin: 2px" type="danger">21years
-					</el-tag>
-					<el-tag class="mx-1" effect="plain" round size="large" style="margin: 2px" type="warning">Benefit
-						finder
-					</el-tag>
-					<el-tag class="mx-1" effect="light" round size="large" style="margin: 2px" type="success">Product
-						manager
-					</el-tag>
-					<el-tag class="mx-1" effect="plain" round size="large" style="margin: 2px" type="warning">fitness
-					</el-tag>
-					<el-tag class="mx-1" effect="plain" round size="large" style="margin: 2px" type="danger">Cantaloupe
-						crazy
-					</el-tag>
-					<el-tag class="mx-1" effect="plain" round size="large" style="margin: 2px" type="">Light music
-					</el-tag>
+					<el-tag v-for="tag in tags"
+							class="mx-1"
+							style="margin: 2px"
+							:effect=tag.effect
+							:round="tag.round"
+							:size="tag.size"
+							:type="tag.type"
+					>{{ tag.value }}</el-tag>
 				</el-row>
 				<el-row justify="center" style="margin-top: 5vh">
 					<el-col :offset="1" :span="10" justify="center">
@@ -189,16 +182,20 @@
 							<el-timeline-item
 								v-for="(activity, index) in activities"
 								:key="index"
-								:color="activity.color"
-								:hollow="activity.hollow"
-								:icon="activity.icon"
-								:size="activity.size"
+								:hollow="activity['hollow']"
+								:size="activity['size']"
 								:timestamp="activity.timestamp"
-								:type="activity.type"
+								:type="activity['type']"
 								placement="top"
 							>
 								<el-card>
 									{{ activity.content }}
+									<el-tag
+										:effect="activity['tag']['effect']"
+										:type  ="activity['tag']['type']"
+										:size  ="activity['tag']['size']"
+										:round ="activity['tag']['round']"
+									>{{ i2g[activity['tag']["place"]] }}</el-tag>
 								</el-card>
 							</el-timeline-item>
 						</el-timeline>
@@ -212,49 +209,20 @@
 	</div>
 </template>
 <script name="Index" setup>
-import {onMounted, reactive, ref} from "vue";
+import {getCurrentInstance, onMounted, reactive, ref} from "vue";
 import SvgIcon from "@/components/SvgIcon/index.vue";
-// import * as echarts from "echarts";
-import {MoreFilled} from '@element-plus/icons-vue'
 import china from "@/assets/data/china.json"
 import {useRouter} from "vue-router";
 import {getAllData} from "@/api/home"
-import {getGeo2Index, getIndex2Geo} from "@/api/DataMgt/index"
+import {getGeo2Index, getIndex2Geo} from "@/api/DataMgt"
+import {randomTimeLineStyle, randomTagStyle} from "@/api/utils"
 
 const {proxy} = getCurrentInstance()
 const i2g = getIndex2Geo();
 const g2i = getGeo2Index();
 const router = useRouter();
-//通过ref获取html元素
-const activities = ref([
-	{
-		content: 'Custom icon',
-		timestamp: '2018-04-12 20:46',
-		size: 'large',
-		type: 'primary',
-		icon: MoreFilled,
-	},
-	{
-		content: 'Custom color',
-		timestamp: '2018-04-03 20:46',
-		color: '#0bbd87',
-	},
-	{
-		content: 'Custom size',
-		timestamp: '2018-04-03 20:46',
-		size: 'large',
-	},
-	{
-		content: 'Custom hollow',
-		timestamp: '2018-04-03 20:46',
-		type: 'primary',
-		hollow: true,
-	},
-	{
-		content: 'Default node',
-		timestamp: '2018-04-03 20:46',
-	},
-])
+//数据
+const activities = ref([])
 const chart = ref()
 const allData = reactive({
 	programs: 0,
@@ -264,6 +232,14 @@ const allData = reactive({
 	cards: {"0": 0, "1": 0, "2": 0, "3": 0},
 	curTimeLine: []
 })
+const tags = ref([
+	{value:"21years"},
+	{value:"Benefit finder"},
+	{value:"Product manager"},
+	{value:"fitness"},
+	{value:"Cantaloupe crazy"},
+	{value:"Light music"},
+])
 
 const setCharts = () => {
 	var myChart = proxy.$echarts.init(chart.value, "light");
@@ -331,12 +307,28 @@ onMounted(() => {
 		activities.value = []
 		rp.data["curTimeLine"].forEach(tmp=>{
 			console.log(tmp)
-			let activity = {}
+			let activity = randomTimeLineStyle()
+			let tag = randomTagStyle()
 			activity["timestamp"] = tmp["createTime"]
 			activity["content"] = tmp["title"]
+			activity["tag"] = {
+				place: tmp["place"],
+				size: tag.size,
+				type: tag.type,
+				effect: tag.effect,
+				round: tag.round
+			}
 			activities.value.push(activity)
 		})
 	})
+	//设置tagsStyle
+	for (let tag of tags.value) {
+		let tmp = randomTagStyle()
+		tag["type"] = tmp.type;
+		tag["effect"] = tmp.effect;
+		tag["round"] = true;
+		tag["size"] = "large";
+	}
 });
 </script>
 

@@ -121,7 +121,7 @@ const activities = ref([])
 
 const getListByPlaceL = () => {
 	activities.value = [];
-	getListByPlace(curPlace.value).then(rp => {
+	getListByPlace({place: curPlace.value}).then(rp => {
 		console.log(rp.data)
 		// let colors = ["blue", "green", "red", "orange"];
 		let types = ["danger", "primary", "success", "info", "warning"];
