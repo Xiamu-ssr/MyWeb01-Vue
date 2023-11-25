@@ -51,8 +51,9 @@
 							v-for="(activity, index) in activities"
 							:key="index"
 							:hollow="activity.hollow"
-							:timestamp="activity.createTime"
+							:timestamp="activity['createTime']"
 							:type="activity.type"
+							:size="activity.size"
 							placement="top"
 						>
 							<el-card>
@@ -105,7 +106,8 @@
 <script name="TimeLine" setup>
 import {onMounted} from "vue";
 import {getListByPlace} from "@/api/TimeLine";
-import {getGeo2Index, getIndex2Geo} from "@/api/DataMgt/index"
+import {getGeo2Index, getIndex2Geo} from "@/api/DataMgt"
+import {randomTimeLineStyle} from "@/api/utils";
 
 import topHome from "@/assets/images/topHome.png"
 
@@ -123,14 +125,12 @@ const getListByPlaceL = () => {
 	activities.value = [];
 	getListByPlace({place: curPlace.value}).then(rp => {
 		console.log(rp.data)
-		// let colors = ["blue", "green", "red", "orange"];
-		let types = ["danger", "primary", "success", "info", "warning"];
-		let hollows = [true, false];
 
 		for (let d of rp.data) {
-			d.hollow = hollows[Math.floor(Math.random() * hollows.length)];
-			// d.color = colors[Math.floor(Math.random() * colors.length)];
-			d.type = types[Math.floor(Math.random() * types.length)];
+			let tmp = randomTimeLineStyle()
+			d.size = tmp.size
+			d.type = tmp.type
+			d.hollow = tmp.hollow
 			d.imgList = Array.from(d['images']).map(i => {
 				return viewImgUrl.value + '/' + i.name
 			})

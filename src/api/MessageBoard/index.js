@@ -40,6 +40,3 @@ export function cancelCheck(params){
     })
 }
 
-// export function cancelCheck(params){
-//     return axios.get("/test.json")
-// }
