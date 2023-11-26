@@ -287,7 +287,7 @@ const setCharts = () => {
 
 onMounted(() => {
 	getAllData().then(rp => {
-		console.log(rp.data)
+		// console.log(rp.data)
 		//转化programs和partners
 		allData.programs = rp.data["programs"]
 		allData.partners = rp.data["partners"]
@@ -306,7 +306,7 @@ onMounted(() => {
 		//转化最新动态
 		activities.value = []
 		rp.data["curTimeLine"].forEach(tmp=>{
-			console.log(tmp)
+			// console.log(tmp)
 			let activity = randomTimeLineStyle()
 			let tag = randomTagStyle()
 			activity["timestamp"] = tmp["createTime"]
