@@ -188,7 +188,7 @@
 								:type="activity['type']"
 								placement="top"
 							>
-								<el-card>
+								<el-card class="hover-card" @click="transUrl(activity['tag']['place'])">
 									{{ activity.content }}
 									<el-tag
 										:effect="activity['tag']['effect']"
@@ -283,6 +283,12 @@ const setCharts = () => {
 		// console.log(params);
 		router.push({path: "/TimeLine", state: {place: params.name}})
 	});
+}
+
+//最近动态跳转
+const transUrl=(place)=>{
+	// console.log(place)
+	router.push({path: "/TimeLine", state: {place: i2g[place]}});
 }
 
 onMounted(() => {

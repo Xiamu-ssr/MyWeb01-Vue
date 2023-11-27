@@ -5,7 +5,7 @@
 				<template v-for="item in showParams">
 					<el-col :span="1"></el-col>
 					<el-col :span="6">
-						<el-card style="margin-top: 5vh;display: flex; justify-content: center">
+						<el-card class="hover-card" style="margin-top: 5vh;display: flex; justify-content: center">
 							<el-scrollbar style="height: 200px;">
 								<el-image :src="urlPre+item['fileUrl']" style="width: 100%; height: auto" @click="transUrl(item['url'])"/>
 							</el-scrollbar>

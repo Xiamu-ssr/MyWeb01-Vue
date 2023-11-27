@@ -39,7 +39,7 @@
 		<el-scrollbar class="box-class" style="margin-top: 1%;height: 84%">
 			<el-row :gutter="20" style="width: 100%">
 				<el-col :span="6" v-for="m in messages" style="margin-top: 3%">
-					<el-card style="border-radius: 10px">
+					<el-card class="hover-card" style="border-radius: 10px">
 						<el-row justify="center" style="margin: 0px;padding:0px">
 							<el-col :span="8">
 								<el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"/>

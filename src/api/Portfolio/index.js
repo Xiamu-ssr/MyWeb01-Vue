@@ -25,3 +25,11 @@ export function deletById(params){
         data:params
     })
 }
+
+export function updateOrder(params){
+    return request({
+        url: '/Portfolio/update',
+        method: 'post',
+        data:params
+    })
+}

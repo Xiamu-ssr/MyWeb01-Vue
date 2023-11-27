@@ -3,7 +3,7 @@
 		<el-row class="box-class" style="height: 30%">
 			<el-form class="form-header-search">
 				<el-row>
-					<el-col :span="4" :offset="8">
+					<el-col :span="6" :offset="4">
 						<el-upload
 							ref="uploadRef"
 							class="avatar-uploader"
@@ -17,13 +17,13 @@
 							:before-upload="checkImage"
 						>
 							<el-image v-if="!!queryParams.fileUrl"
-									  style="width: 200px;height: 200px"
+									  style="width: 260px;height: 195px"
 									  :src="urlPre + queryParams.fileUrl"
 									  class="avatar" />
 							<el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
 						</el-upload>
 					</el-col>
-					<el-col :span="4">
+					<el-col :span="6">
 						<el-row>
 							<el-form-item label="标题">
 								<el-input v-model="queryParams.title"></el-input>
@@ -32,6 +32,11 @@
 						<el-row>
 							<el-form-item label="链接地址">
 								<el-input v-model="queryParams.url"></el-input>
+							</el-form-item>
+						</el-row>
+						<el-row>
+							<el-form-item label="排序">
+								<el-input-number v-model="queryParams.orderNum" :min="0" :max="65535"></el-input-number>
 							</el-form-item>
 						</el-row>
 						<el-row>
@@ -57,12 +62,10 @@
 								</el-button>
 							</el-form-item>
 						</el-row>
-						<el-row>
-							<el-form-item label="操作">
-								<el-button type="warning" @click="resetImg">重置图片</el-button>
-								<el-button type="primary" @click="submit">提交</el-button>
-							</el-form-item>
-						</el-row>
+					</el-col>
+					<el-col :span="4" style="align-items: center;display: flex;justify-content: center">
+						<el-button type="warning" @click="resetImg">重置图片</el-button>
+						<el-button type="primary" @click="submit">提交</el-button>
 					</el-col>
 				</el-row>
 			</el-form>
@@ -78,14 +81,12 @@
 							</el-scrollbar>
 							<div style="padding: 14px">
 								<span style="font-family: '方正粗黑宋简体';font-size: 28px;">{{ item['title'] }}</span>
-								<el-row>
-									<el-col :span="8">
-										<el-input>4</el-input>
+								<el-row style="margin-top: 5%">
+									<el-col :span="12">
+										<el-input-number v-model="item['orderNum']" :min="0" :max="65536"></el-input-number>
 									</el-col>
-									<el-col :span="6" :offset="2">
-										<el-button type="primary" class="button" plain>更新顺序</el-button>
-									</el-col>
-									<el-col :span="6" :offset="2">
+									<el-col :span="11" :offset="1" style="display: flex">
+										<el-button type="primary" plain @click="updateOrderL(item['id'], item['orderNum'])" >更新顺序</el-button>
 										<el-popconfirm
 											width="220"
 											confirm-button-text="是的"
@@ -115,7 +116,7 @@
 <script setup name="PortfolioMgt">
 import { getToken } from "@/utils/auth";
 import {getCurrentInstance, nextTick, onMounted, reactive, ref} from "vue";
-import {createNew, getList, deletById} from "@/api/Portfolio"
+import {createNew, getList, deletById, updateOrder} from "@/api/Portfolio"
 import {InfoFilled} from "@element-plus/icons-vue";
 
 const {proxy} = getCurrentInstance();
@@ -137,18 +138,17 @@ const inputVisible = ref(false)
 const InputRef = ref()
 //展示数据
 const showParams=ref([])
-
-
-
 //提交数据
 const queryParams=reactive({
 	fileUrl: undefined,
 	title: undefined,
 	url: undefined,
-	tags:[]
+	tags:[],
+	orderNum:0,
 })
 
-//提交前检查
+
+//提交图片前检查
 const checkImage = (rawFile) => {
 	if (rawFile.size / 1024 / 1024 > 8) {
 		proxy.$modal.alertError('Picture size can not exceed 8MB!')
@@ -170,11 +170,11 @@ const resetImg = ()=>{
 	upload.disabled = false
 }
 
-//删除
+//删除tag
 const handleClose = (tag) => {
 	queryParams.tags.splice(queryParams.tags.indexOf(tag), 1)
 }
-//添加
+//添加tag
 const showInput = () => {
 	if (queryParams.tags.length <= 5){
 		inputVisible.value = true
@@ -220,6 +220,9 @@ const submit=()=>{
 				queryParams.fileUrl = undefined;
 				queryParams.url = undefined;
 				queryParams.tags = []
+				queryParams.orderNum = 0;
+				uploadRef.value.clearFiles();
+				upload.disabled = false
 				proxy.$modal.msgSuccess("添加成功")
 				getListL();
 			}
@@ -237,6 +240,17 @@ const deleteByIdL=(id)=>{
 	console.log(id)
 	deletById(id).then(rp=>{
 		proxy.$modal.msgSuccess("删除成功")
+		getListL();
+	})
+}
+
+const updateOrderL=(id, orderNum)=>{
+	updateOrder({id: id, orderNum: orderNum}).then(rp=>{
+		if (rp["code"]===200){
+			proxy.$modal.msgSuccess("更新成功");
+		}else {
+			proxy.$modal.msgError(rp["msg"]);
+		}
 		getListL();
 	})
 }
@@ -259,8 +273,8 @@ onMounted(()=>{
 	border: 1px dashed var(--el-border-color);
 	background-color: #ffffff;
 	border-radius: 6px;
-	width: 200px;
-	height: 200px;
+	width: 260px;
+	height: 195px;
 	cursor: pointer;
 	position: relative;
 	overflow: hidden;
