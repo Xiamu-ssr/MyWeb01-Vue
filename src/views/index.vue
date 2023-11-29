@@ -3,203 +3,150 @@
 		<!--  通过ref获取html元素 宽高必须设置 -->
 		<el-row :gutter="20" style="height: 100%">
 			<!--      第一列-->
-			<el-col :span="5" class="box-class">
-				<el-row>
+			<el-col :span="5" class="box-class" v-loading="loadings[0]" element-loading-background="#fddb9255">
+<!--				头像块-->
+				<el-row style="height: 20%">
 					<el-col :span="12">
-						<el-avatar :size="120" shape="square"/>
+						<el-avatar shape="square" style="height: 80%;width: auto" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"/>
 					</el-col>
 					<el-col :span="12">
-						<el-row>
-							<el-col :span="24"><b style="font-size: 24px;">Mo<br/> Kanglong</b></el-col>
+						<el-row style="height: 50%;">
+							<el-col :span="24"><b style="font-size: 1.5vw;">Mo<br/> Kanglong</b></el-col>
 						</el-row>
-						<el-row style="margin-top: 20%">
+						<el-row style="height: 50%;">
 							<el-col :span="24">
 								<el-tag size="large" style="font-size: 14px" type="danger">Standart</el-tag>
 							</el-col>
 						</el-row>
 					</el-col>
 				</el-row>
-				<el-row style="margin-top: 8%">
+<!--				program块-->
+				<el-row style="margin-top: 0%;height: 10%">
 					<el-col :span="12">
-						<el-row style="height: 6vh">
-							<el-col :span="8" style="width: 100%;">
+						<el-row style="height: 100%">
+							<el-col :span="8">
 								<svg-icon icon-class="Home_01" style="width: 100%;height: 100%;"></svg-icon>
 							</el-col>
-							<el-col :span="16">
-								<span
-									style="display: inline-block;font-size: 28px;margin: 6px;padding: 0px;margin-bottom: 0px">{{
-										allData.programs
-									}}</span><br/>
-								<span
-									style="display: inline-block;font-size: 12px;margin: 2px;padding: 0px;">Programs</span>
+							<el-col :span="16" style="display: flex;align-items: center">
+								<div>
+									<span style="font-size: 1.6vw;">
+										{{allData.programs }}
+									</span><br/>
+									<span style="font-size: 0.8vw">Programs</span>
+								</div>
 							</el-col>
 						</el-row>
 					</el-col>
 					<el-col :span="12">
-						<el-row style="height: 6vh">
-							<el-col :span="8" style="width: 100%;">
+						<el-row style="height: 100%">
+							<el-col :span="8">
 								<svg-icon icon-class="Home_02" style="width: 100%;height: 100%;"></svg-icon>
 							</el-col>
-							<el-col :span="16">
-								<span
-									style="display: inline-block;font-size: 28px;margin: 6px;padding: 0px;margin-bottom: 0px">{{
-										allData.partners
-									}}</span><br/>
-								<span
-									style="display: inline-block;font-size: 12px;margin: 2px;padding: 0px;">Partners</span>
+							<el-col :span="16" style="display: flex;align-items: center">
+								<div>
+									<span
+										style="font-size: 1.6vw;">
+										{{allData.partners }}
+									</span><br/>
+									<span style="font-size: 0.8vw">Partners</span>
+								</div>
 							</el-col>
 						</el-row>
 					</el-col>
 				</el-row>
-				<el-row style="margin-top: 15%">
-					<span style="font-size: 24px;margin: 0px;padding: 0px;">Details</span>
-				</el-row>
-				<el-row>
+<!--				Details块-->
+				<el-row style="margin-top: 10%;height: 30%">
+					<el-row>
+						<span style="font-size: 1.6vw">Details</span>
+					</el-row>
 					<el-divider></el-divider>
+					<el-row>
+						<el-descriptions column="1" >
+							<el-descriptions-item label="Username">		Kmo Dragon</el-descriptions-item>
+							<el-descriptions-item label="Telephone">	+86 17264466637</el-descriptions-item>
+							<el-descriptions-item label="Place">		Suzhou</el-descriptions-item>
+							<el-descriptions-item label="Remarks">		<el-tag size="small">PManager</el-tag></el-descriptions-item>
+							<el-descriptions-item label="Email">		mumu2663@163.com</el-descriptions-item>
+						</el-descriptions>
+					</el-row>
 				</el-row>
-				<el-row>
-					<el-descriptions column="1" >
-						<el-descriptions-item label="Username">		Kmo Dragon</el-descriptions-item>
-						<el-descriptions-item label="Telephone">	+86 17264466637</el-descriptions-item>
-						<el-descriptions-item label="Place">		Suzhou</el-descriptions-item>
-						<el-descriptions-item label="Remarks">		<el-tag size="small">PManager</el-tag></el-descriptions-item>
-						<el-descriptions-item label="Email">		mumu2663@163.com</el-descriptions-item>
-					</el-descriptions>
-				</el-row>
-				<el-row style="margin-top: 3vh">
-					<span style="font-size: 24px;margin: 0px;padding: 0px;">Segments</span>
-				</el-row>
-				<el-row>
+<!--				Segments块-->
+				<el-row style="margin-top: 5%;height: 25%">
+					<el-row>
+						<span style="font-size: 1.6vw;">Segments</span>
+					</el-row>
 					<el-divider></el-divider>
-				</el-row>
-				<el-row>
-					<el-tag v-for="tag in tags"
-							class="mx-1"
-							style="margin: 2px"
-							:effect=tag.effect
-							:round="tag.round"
-							:size="tag.size"
-							:type="tag.type"
-					>{{ tag.value }}</el-tag>
-				</el-row>
-				<el-row justify="center" style="margin-top: 5vh">
-					<el-col :offset="1" :span="10" justify="center">
-						<el-button style="width: 80px" type="success">Edit</el-button>
-					</el-col>
-					<el-col :offset="2" :span="10" justify="center">
-						<el-button plain style="width: 80px" type="danger">Suspend</el-button>
-					</el-col>
+					<el-row>
+						<el-tag v-for="tag in allData.tags"
+								class="mx-1"
+								style="margin: 0.2vw"
+								:effect=tag.effect
+								:round="tag.round"
+								:size="tag.size"
+								:type="tag.type"
+						>{{ tag.value }}</el-tag>
+					</el-row>
 				</el-row>
 			</el-col>
 			<!--      第二列-->
-			<el-col :span="13">
+			<el-col :span="13" >
 				<!--        四个小card-->
 				<el-row :gutter="20" style="height: 12%">
-					<el-col :span="6">
-						<el-row class="box-class" style="height: 100%">
+					<el-col :span="6" v-for="card in allData.cards">
+						<el-row class="box-class" style="height: 100%" v-loading="loadings[1]" element-loading-background="#fddb9255">
 							<el-col :span="16">
-								<el-row style="height: 50%">
-									<el-col :offset="2" :span="20"><span
-										style="font-size: 24px">{{ allData.cards["0"].toLocaleString() }}</span>
+								<el-row style="height: 60%">
+									<el-col :span="20">
+										<span style="font-size: 1.6vw">{{ card.num.toLocaleString() }}</span>
 									</el-col>
 								</el-row>
-								<el-row style="height: 50%">
-									<el-col :offset="2" :span="22"><span>Images</span></el-col>
+								<el-row style="height: 40%">
+									<el-col :span="22"><span style="font-size: 1vw">{{ card.name }}</span></el-col>
 								</el-row>
 							</el-col>
 							<el-col :span="8" align="center">
-								<svg-icon icon-class="Home_03" style="width: 60%;height: 100%;"></svg-icon>
-							</el-col>
-						</el-row>
-					</el-col>
-					<el-col :span="6">
-						<el-row class="box-class" style="height: 100%">
-							<el-col :span="16">
-								<el-row style="height: 50%">
-									<el-col :offset="2" :span="20"><span
-										style="font-size: 24px">{{ allData.cards["1"].toLocaleString() }}</span>
-									</el-col>
-								</el-row>
-								<el-row style="height: 50%">
-									<el-col :offset="2" :span="22"><span>Posts</span></el-col>
-								</el-row>
-							</el-col>
-							<el-col :span="8" align="center">
-								<svg-icon icon-class="Home_04" style="width: 60%;height: 100%;"></svg-icon>
-							</el-col>
-						</el-row>
-					</el-col>
-					<el-col :span="6">
-						<el-row class="box-class" style="height: 100%">
-							<el-col :span="16">
-								<el-row style="height: 50%">
-									<el-col :offset="2" :span="20"><span
-										style="font-size: 24px">{{ allData.cards["2"].toLocaleString() }}</span>
-									</el-col>
-								</el-row>
-								<el-row style="height: 50%">
-									<el-col :offset="2" :span="22"><span>Messages</span></el-col>
-								</el-row>
-							</el-col>
-							<el-col :span="8" align="center">
-								<svg-icon icon-class="Home_05" style="width: 60%;height: 100%;"></svg-icon>
-							</el-col>
-						</el-row>
-					</el-col>
-					<el-col :span="6">
-						<el-row class="box-class" style="height: 100%">
-							<el-col :span="16">
-								<el-row style="height: 50%">
-									<el-col :offset="2" :span="20"><span
-										style="font-size: 24px">{{ allData.cards["3"].toLocaleString() }}</span>
-									</el-col>
-								</el-row>
-								<el-row style="height: 50%">
-									<el-col :offset="2" :span="22"><span>Days</span></el-col>
-								</el-row>
-							</el-col>
-							<el-col :span="8" align="center">
-								<svg-icon icon-class="Home_06" style="width: 60%;height: 100%;"></svg-icon>
+								<svg-icon :icon-class="card.icon" style="width: 100%;height: 100%;"></svg-icon>
 							</el-col>
 						</el-row>
 					</el-col>
 				</el-row>
-				<el-row style="margin-top: 2%; height: 86%">
+<!--				地图-->
+				<el-row style="margin-top: 2%; height: 86%" v-loading="loadings[2]" element-loading-background="#fddb9255">
 					<el-col :span="24" class="box-class">
 						<div ref="chart" style="height: 100%;"></div>
 					</el-col>
 				</el-row>
-			</el-col>
+			</el-col  >
 			<!--	第三列	-->
-			<el-col :span="6" class="box-class">
-				<el-row style="font-size: 24px">User Activity Timeline</el-row>
-				<el-row>
+			<el-col :span="6" class="box-class" v-loading="loadings[3]" element-loading-background="#fddb9255">
+				<el-row style="height: 100%">
+					<el-row style="font-size: 1.4vw">User Activity Timeline</el-row>
 					<el-divider></el-divider>
-				</el-row>
-				<el-row>
-					<el-col :span="22">
-						<el-timeline>
-							<el-timeline-item
-								v-for="(activity, index) in activities"
-								:key="index"
-								:hollow="activity['hollow']"
-								:size="activity['size']"
-								:timestamp="activity.timestamp"
-								:type="activity['type']"
-								placement="top"
-							>
-								<el-card class="hover-card" @click="transUrl(activity['tag']['place'])">
-									{{ activity.content }}
-									<el-tag
-										:effect="activity['tag']['effect']"
-										:type  ="activity['tag']['type']"
-										:size  ="activity['tag']['size']"
-										:round ="activity['tag']['round']"
-									>{{ i2g[activity['tag']["place"]] }}</el-tag>
-								</el-card>
-							</el-timeline-item>
-						</el-timeline>
-					</el-col>
+					<el-row style="width: 100%">
+						<el-col :span="22">
+							<el-timeline>
+								<el-timeline-item
+									v-for="(activity, index) in activities"
+									:key="index"
+									:hollow="activity['hollow']"
+									:size="activity['size']"
+									:timestamp="activity.timestamp"
+									:type="activity['type']"
+									placement="top"
+								>
+									<el-card class="hover-card" @click="transUrl(activity['tag']['place'])">
+										{{ activity.content }}
+										<el-tag
+											:effect="activity['tag']['effect']"
+											:type  ="activity['tag']['type']"
+											:size  ="activity['tag']['size']"
+											:round ="activity['tag']['round']"
+										>{{ i2g[activity['tag']["place"]] }}</el-tag>
+									</el-card>
+								</el-timeline-item>
+							</el-timeline>
+						</el-col>
+					</el-row>
 				</el-row>
 			</el-col>
 		</el-row>
@@ -208,7 +155,7 @@
 		</div>
 	</div>
 </template>
-<script name="Index" setup>
+<script setup name="Index">
 import {getCurrentInstance, onMounted, reactive, ref} from "vue";
 import SvgIcon from "@/components/SvgIcon/index.vue";
 import china from "@/assets/data/china.json"
@@ -227,18 +174,29 @@ const chart = ref()
 const allData = reactive({
 	programs: 0,
 	partners: 0,
+	tags:[
+		{value:"21years"},
+		{value:"Benefit finder"},
+		{value:"Product manager"},
+		{value:"fitness"},
+		{value:"Cantaloupe crazy"},
+		{value:"Light music"},
+	],
 	geo: [],
 	max: 0,
-	cards: {"0": 0, "1": 0, "2": 0, "3": 0},
+	cards: [
+		{name:"Images", 	num:0, icon:"Home_03"},
+		{name:"Post",   	num:0, icon:"Home_04"},
+		{name:"Messages", 	num:0, icon:"Home_05"},
+		{name:"Days", 		num:0, icon:"Home_06"},
+	],
 	curTimeLine: []
 })
-const tags = ref([
-	{value:"21years"},
-	{value:"Benefit finder"},
-	{value:"Product manager"},
-	{value:"fitness"},
-	{value:"Cantaloupe crazy"},
-	{value:"Light music"},
+const loadings = ref([
+	true,//第一列
+	true,//第二列上面
+	true,//第二列下面
+	true//第三列
 ])
 
 const setCharts = () => {
@@ -297,6 +255,12 @@ onMounted(() => {
 		//转化programs和partners
 		allData.programs = rp.data["programs"]
 		allData.partners = rp.data["partners"]
+		loadings.value[0] = false;
+		//转化cards数据
+		for(let i=0; i<allData.cards.length; ++i){
+			allData.cards[i].num = rp.data["fourCards"][`${i}`]
+		}
+		loadings.value[1] = false;
 		//转化geo数据
 		for (let key in i2g) {
 			if (key in rp.data["geo"]) {
@@ -307,8 +271,7 @@ onMounted(() => {
 			}
 		}
 		setCharts();
-		//转化cards数据
-		allData.cards = rp.data["fourCards"]
+		loadings.value[2] = false;
 		//转化最新动态
 		activities.value = []
 		rp.data["curTimeLine"].forEach(tmp=>{
@@ -326,9 +289,10 @@ onMounted(() => {
 			}
 			activities.value.push(activity)
 		})
+		loadings.value[3] = false;
 	})
 	//设置tagsStyle
-	for (let tag of tags.value) {
+	for (let tag of allData.tags) {
 		let tmp = randomTagStyle()
 		tag["type"] = tmp.type;
 		tag["effect"] = tmp.effect;
@@ -362,5 +326,14 @@ onMounted(() => {
 	font-size: 14px;
 	font-family: "微軟正黑體";
 	color: #000000bb;
+}
+
+:deep(.el-descriptions__cell){
+	padding-bottom: 0.2vw !important;
+	font-size: 0.8vw !important;
+}
+:deep(.el-divider){
+	margin: 0 !important;
+	padding: 0 !important;
 }
 </style>
