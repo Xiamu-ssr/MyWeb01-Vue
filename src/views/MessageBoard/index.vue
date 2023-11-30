@@ -1,7 +1,7 @@
 <template>
 	<div class="homePage">
-		<el-row class="box-class" style="height: 10%">
-			<el-col :span="4" :offset="2">
+		<el-row class="box-class" style="height: 10%" v-loading="loadings[0]" element-loading-background="#fddb9255">
+			<el-col :span="4" :offset="2" >
 				<el-statistic title="留言人数" :value="topData.peopleNum" />
 			</el-col>
 			<el-col :span="4">
@@ -30,17 +30,16 @@
 				</el-statistic>
 			</el-col>
 			<el-col :span="4">
-				<el-row justify="space-between" style="align-items: center; height: 100%">
+				<el-row justify="space-evenly" style="align-items: center; height: 100%">
 					<el-button type="primary" plain @click="dialogVisible = true">留下你的言语</el-button>
-					<el-button>去年今月</el-button>
 				</el-row>
 			</el-col>
 		</el-row>
-		<el-scrollbar class="box-class" style="margin-top: 1%;height: 84%">
+		<el-scrollbar class="box-class" style="margin-top: 1%;height: 84%" v-loading="loadings[1]" element-loading-background="#fddb9255">
 			<el-row :gutter="20" style="width: 100%">
 				<el-col :span="6" v-for="m in messages" style="margin-top: 3%">
 					<el-card class="hover-card" style="border-radius: 10px">
-						<el-row justify="center" style="margin: 0px;padding:0px">
+						<el-row justify="center" style="margin: 0;padding:0">
 							<el-col :span="8">
 								<el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"/>
 							</el-col>
@@ -48,11 +47,11 @@
 								<el-tag size="large" :type="m.nameColor" :effect="m.nameEffect">{{ m.name }}</el-tag>
 							</el-col>
 						</el-row>
-						<el-divider style="margin-top: 6px;margin-bottom: 12px"></el-divider>
+						<el-divider style="margin-top: 0.7vh;margin-bottom: 1.1vh"></el-divider>
 						<el-row>
-							<span style="font-family: '微軟正黑體';font-weight: bold;font-size: 24px">{{ m.text }}</span>
+							<span style="font-family: '微軟正黑體';font-weight: bold;font-size: 1.4vw">{{ m.text }}</span>
 						</el-row>
-						<el-row justify="end" style="margin-top: 24px">
+						<el-row justify="end" style="margin-top: 2vh">
 							<el-col :span="10" style="align-items: center;display: flex">
 								<el-icon size="20"><Calendar /></el-icon>&nbsp;&nbsp;&nbsp;&nbsp;{{ (m.createTime+"").substring(0,10) }}
 							</el-col>
@@ -161,6 +160,10 @@ const rules = reactive({
 	nameColor:[{ required: false, message: 'Please input', trigger: 'blur' }],
 	nameEffect:[{ required: true, message: 'Please input', trigger: 'blur' }]
 })
+const loadings=ref([
+	true,
+	true
+])
 
 const handleClose = (done) => {
 	ElMessageBox.confirm('你要退出留言新建界面吗?')
@@ -199,6 +202,7 @@ const getListL=()=>{
 		if (rp["code"] === 200){
 			messages.value = rp.data
 			proxy.$modal.msgSuccess("已与留言星建立连接--..Success..");
+			loadings.value[1] = false
 		}else {
 			proxy.$modal.msgSuccess("Fail:Please Connect Developer");
 		}
@@ -211,6 +215,7 @@ const getTopDataL=()=>{
 		topData.messageNum = rp["data"]["messageNum"];
 		topData.textNum = rp["data"]["textNum"];
 		topData.peopleNum = rp["data"]["peopleNum"];
+		loadings.value[0] = false
 	})
 }
 
@@ -226,7 +231,7 @@ onMounted(()=>{
 	margin-top: 1vh;
 	margin-left: 1vw;
 	margin-right: 1vw;
-	margin-bottom: 1vh;
+	margin-bottom: 0vh;
 	//box-shadow: 3px 0px 5px 3px #00000005, -3px 0px 5px 3px #00000005, 0px 3px 5px 3px #00000005, 0px -3px 5px 3px #00000005;
 	//border-radius: 10px;
 	height: 92vh;
@@ -236,5 +241,9 @@ onMounted(()=>{
 }
 :deep(.el-dialog) {
 	margin-top: auto !important;
+}
+:deep(.el-statistic__head){
+	font-size: 1vw !important;
+	font-weight: bold;
 }
 </style>

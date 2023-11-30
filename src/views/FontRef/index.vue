@@ -23,7 +23,7 @@
 			<el-col v-for="f in fontList" :span="8" align="center" style="padding: 5px">
 				<el-card :style="{'font-family':f, 'font-size':'32px'}">
 					<el-row>
-						<el-col :span="18" :style="{'font-weight':fontBold}">
+						<el-col :span="18" :style="{'font-weight':fontBold}" style="font-size: 1.8vw">
 							{{ f }}
 						</el-col>
 						<el-col :span="6">

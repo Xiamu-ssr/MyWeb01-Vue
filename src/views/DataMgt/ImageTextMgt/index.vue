@@ -391,4 +391,11 @@ onMounted(() => {
 :deep(.el-dialog) {
 	margin-top: auto !important;
 }
+:deep(.el-form-item){
+	height: 5vh !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	align-items: center !important;
+}
+
 </style>

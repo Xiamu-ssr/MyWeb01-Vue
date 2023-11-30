@@ -57,7 +57,7 @@
 <!--				Details块-->
 				<el-row style="margin-top: 10%;height: 30%">
 					<el-row>
-						<span style="font-size: 1.6vw">Details</span>
+						<span style="font-size: 1.4vw">Details</span>
 					</el-row>
 					<el-divider></el-divider>
 					<el-row>
@@ -73,7 +73,7 @@
 <!--				Segments块-->
 				<el-row style="margin-top: 5%;height: 25%">
 					<el-row>
-						<span style="font-size: 1.6vw;">Segments</span>
+						<span style="font-size: 1.4vw;">Segments</span>
 					</el-row>
 					<el-divider></el-divider>
 					<el-row>
@@ -120,7 +120,7 @@
 			<!--	第三列	-->
 			<el-col :span="6" class="box-class" v-loading="loadings[3]" element-loading-background="#fddb9255">
 				<el-row style="height: 100%">
-					<el-row style="font-size: 1.4vw">User Activity Timeline</el-row>
+					<el-row style="font-size: 1.4vw;font-weight: bold;font-family: 'Stencil Std, fantasy'">User Activity Timeline</el-row>
 					<el-divider></el-divider>
 					<el-row style="width: 100%">
 						<el-col :span="22">

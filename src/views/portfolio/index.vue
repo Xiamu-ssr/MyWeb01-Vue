@@ -3,18 +3,18 @@
 		<el-scrollbar class="box-class" style="margin-top: 1%;height: 100%">
 			<el-row>
 				<template v-for="item in showParams">
-					<el-col :span="1"></el-col>
-					<el-col :span="6">
+					<el-col :span="2"></el-col>
+					<el-col :span="8">
 						<el-card class="hover-card" style="margin-top: 5vh;display: flex; justify-content: center">
 							<el-scrollbar style="height: 200px;">
 								<el-image :src="urlPre+item['fileUrl']" style="width: 100%; height: auto" @click="transUrl(item['url'])"/>
 							</el-scrollbar>
-							<div style="padding: 14px">
-								<span style="font-family: '方正粗黑宋简体';font-size: 28px;">{{ item['title'] }}</span>
+							<div style="padding: 1vw">
+								<span style="font-family: '方正粗黑宋简体';font-size: 1.6vw;">{{ item['title'] }}</span>
 							</div>
 						</el-card>
 					</el-col>
-					<el-col :span="1"></el-col>
+					<el-col :span="2"></el-col>
 				</template>
 			</el-row>
 		</el-scrollbar>

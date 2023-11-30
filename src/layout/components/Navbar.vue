@@ -9,7 +9,7 @@
 				<top-nav v-if="settingsStore.topNav" id="topmenu-container" class="topmenu-container"/>
 			</el-col>
 			<el-col :span="8" style="display: flex; align-items: center; justify-content: center">
-				<span style="font-size: 24px;font-family: Times, Times New Roman, serif;">qmeternity.cn</span>
+				<span style="font-size: 1.5vw;font-family: Times, Times New Roman, serif;">qmeternity.cn</span>
 			</el-col>
 			<el-col :span="8">
 				<div class="right-menu">
@@ -116,14 +116,14 @@ function setLayout() {
 
 <style lang='scss' scoped>
 .navbar {
-	height: 50px;
+	height: 6vh;
 	overflow: hidden;
 	position: relative;
 	background: #d1fdff;
 	box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
 
 	.hamburger-container {
-		line-height: 46px;
+		line-height: 3vh;
 		height: 100%;
 		float: left;
 		cursor: pointer;
@@ -163,7 +163,7 @@ function setLayout() {
 			display: inline-block;
 			padding: 0 8px;
 			height: 100%;
-			font-size: 18px;
+			font-size: 0.8vw;
 			color: #5a5e66;
 			vertical-align: text-bottom;
 

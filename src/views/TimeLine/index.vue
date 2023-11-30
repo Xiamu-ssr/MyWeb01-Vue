@@ -1,11 +1,11 @@
 <template>
-	<div>
+<!--	<div>-->
 		<el-scrollbar class="homePage">
 			<!--      封面-->
 			<el-row>
 				<el-col :span="24">
 					<div class="image-container">
-						<el-image fit="contain" :src="topHome"></el-image>
+						<el-image fit="cover" :src="topHome"></el-image>
 						<div class="overlay-text">
 							<el-row>
 								<el-col :span="24">
@@ -14,28 +14,27 @@
 							</el-row>
 							<el-row>
 								<el-col :span="24">
-									<span style="font-size: 32px; color: black;font-family: 方正粗黑宋简体">I am Developer</span>
+									<span style="font-size: 2vw; color: black;font-family: 方正粗黑宋简体">I am Developer</span>
 								</el-col>
 							</el-row>
-							<el-row style="padding-top: 14px">
+							<el-row style="padding-top: 1vh">
 								<el-col :span="24">
-									<span style="font-size: 16px; color: black;font-family: 楷体;font-weight: bold">I make the complex simple</span>
+									<span style="font-size: 1.2vw; color: black;font-family: 楷体;font-weight: bold">I make the complex simple</span>
 								</el-col>
 							</el-row>
 						</div>
 					</div>
-
 				</el-col>
 			</el-row>
 			<!--      地区选择-->
 			<el-row>
 				<el-col :span="24" align="center">
-					<span style="font-size: 28px;font-family: Georgia, serif">Page Time-Line</span>
+					<span style="font-size: 2vw;font-family: Georgia, serif">Page Time-Line</span>
 				</el-col>
 			</el-row>
 			<el-row>
 				<el-col :offset="10" :span="4" align="center">
-					<span style="font-size: 16px;font-family: Arial, sans-serif">地区</span>
+					<span style="font-size: 1.1vw;font-family: Arial, sans-serif">地区</span>
 					<el-divider direction="vertical"/>
 					<el-select v-model="curPlace" clearable style="width: 100px" @change="selectChange">
 						<el-option v-for="p in selectOptions.place" :label="p.label" :value="p.value"></el-option>
@@ -59,7 +58,7 @@
 							<el-card>
 								<el-row>
 									<el-col :span="24">
-										<span style="font-size: 32px;font-weight: bold; font-family: 楷体">{{
+										<span style="font-size: 2vw;font-weight: bold; font-family: 楷体">{{
 												activity.title
 											}}</span>
 									</el-col>
@@ -89,7 +88,7 @@
 								</el-row>
 								<el-row>
 									<el-col :span="24">
-										<span style="font-size: 18px;font-family: 黑体">{{ activity.text }}</span>
+										<span style="font-size: 1.2vw;font-family: 黑体">{{ activity.text }}</span>
 									</el-col>
 								</el-row>
 							</el-card>
@@ -99,7 +98,7 @@
 				<el-col :span="4"></el-col>
 			</el-row>
 		</el-scrollbar>
-	</div>
+<!--	</div>-->
 </template>
 
 
@@ -169,7 +168,7 @@ onMounted(() => {
 	margin-top: 1vh;
 	margin-left: 1vw;
 	margin-right: 1vw;
-	margin-bottom: 1vh;
+	margin-bottom: 0vh;
 	box-shadow: 3px 0px 5px 3px #00000005, -3px 0px 5px 3px #00000005, 0px 3px 5px 3px #00000005, 0px -3px 5px 3px #00000005;
 	border-radius: 10px;
 	height: 92vh;

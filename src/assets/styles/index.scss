@@ -123,13 +123,13 @@ aside {
 
 //main-container全局样式
 .app-container {
-  margin-top: 6vh;
-  margin-left: 24px;
-  margin-right: 24px;
-  margin-bottom: 8vh;
+  margin-top: 4vh;
+  margin-left: 2vw;
+  margin-right: 2vw;
+  margin-bottom: 6vh;
   //box-shadow: 3px 0px 5px 3px #00000005,-3px 0px 5px 3px #00000005, 0px 3px 5px 3px #00000005,0px -3px 5px 3px #00000005;
   //border-radius: 10px;
-  height: 80vh;
+  height: 84vh;
 }
 
 .components-container {
@@ -191,7 +191,7 @@ aside {
 
 //self 自定义样式
 .box-class{
-  padding: 20px;
+  padding: 1vw;
   border-radius: 10px;
   box-shadow: 3px 0px 5px 3px #00000005,-3px 0px 5px 3px #00000005, 0px 3px 5px 3px #00000005,0px -3px 5px 3px #00000005;
 }

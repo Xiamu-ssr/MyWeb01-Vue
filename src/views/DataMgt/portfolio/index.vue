@@ -3,7 +3,7 @@
 		<el-row class="box-class" style="height: 30%">
 			<el-form class="form-header-search">
 				<el-row>
-					<el-col :span="6" :offset="4">
+					<el-col :span="6" :offset="3">
 						<el-upload
 							ref="uploadRef"
 							class="avatar-uploader"
@@ -17,13 +17,13 @@
 							:before-upload="checkImage"
 						>
 							<el-image v-if="!!queryParams.fileUrl"
-									  style="width: 260px;height: 195px"
+									  style="width: 14vw;aspect-ratio: 260 / 195;"
 									  :src="urlPre + queryParams.fileUrl"
 									  class="avatar" />
 							<el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
 						</el-upload>
 					</el-col>
-					<el-col :span="6">
+					<el-col :span="6" class="my-row">
 						<el-row>
 							<el-form-item label="标题">
 								<el-input v-model="queryParams.title"></el-input>
@@ -63,7 +63,7 @@
 							</el-form-item>
 						</el-row>
 					</el-col>
-					<el-col :span="4" style="align-items: center;display: flex;justify-content: center">
+					<el-col :span="6" style="align-items: center;display: flex;justify-content: center">
 						<el-button type="warning" @click="resetImg">重置图片</el-button>
 						<el-button type="primary" @click="submit">提交</el-button>
 					</el-col>
@@ -73,14 +73,14 @@
 		<el-scrollbar class="box-class" style="margin-top: 1%;height: 70%">
 			<el-row>
 				<template v-for="item in showParams">
-					<el-col :span="1"></el-col>
-					<el-col :span="6">
+					<el-col :span="2"></el-col>
+					<el-col :span="8">
 						<el-card style="margin-top: 5vh;display: flex; justify-content: center">
 							<el-scrollbar style="height: 200px;">
 								<el-image :src="urlPre+item['fileUrl']" style="width: 100%; height: auto" @click="transUrl(item['url'])"/>
 							</el-scrollbar>
-							<div style="padding: 14px">
-								<span style="font-family: '方正粗黑宋简体';font-size: 28px;">{{ item['title'] }}</span>
+							<div style="padding: 1vw">
+								<span style="font-family: '方正粗黑宋简体';font-size: 1.6vw;">{{ item['title'] }}</span>
 								<el-row style="margin-top: 5%">
 									<el-col :span="12">
 										<el-input-number v-model="item['orderNum']" :min="0" :max="65536"></el-input-number>
@@ -105,7 +105,7 @@
 							</div>
 						</el-card>
 					</el-col>
-					<el-col :span="1"></el-col>
+					<el-col :span="2"></el-col>
 				</template>
 			</el-row>
 		</el-scrollbar>
@@ -273,8 +273,8 @@ onMounted(()=>{
 	border: 1px dashed var(--el-border-color);
 	background-color: #ffffff;
 	border-radius: 6px;
-	width: 260px;
-	height: 195px;
+	width: 14vw;
+	aspect-ratio: 260 / 195;
 	cursor: pointer;
 	position: relative;
 	overflow: hidden;
@@ -285,12 +285,13 @@ onMounted(()=>{
 	border-color: var(--el-color-primary);
 }
 
-.el-icon.avatar-uploader-icon {
-	font-size: 28px;
-	color: #8c939d;
-	width: 200px;
-	height: 200px;
-	text-align: center;
+:deep(.my-row .el-row){
+	margin: 1vh;
+	height: 3.6vh;
+}
+
+:deep(.my-row .el-input__wrapper){
+	height: 3vh;
 }
 
 </style>
