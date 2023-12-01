@@ -14,7 +14,7 @@ export function getList(){
     return request({
         url: '/Portfolio/getList',
         method: 'get',
-        data:null
+        params:null
     })
 }
 

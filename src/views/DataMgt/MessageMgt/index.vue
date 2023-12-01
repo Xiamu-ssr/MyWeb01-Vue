@@ -30,8 +30,8 @@
 				</el-row>
 			</el-form>
 		</el-row>
-		<el-row class="box-class" style="margin-top: 1%; height: 79%">
-			<el-table :data="tableData" border stripe>
+		<el-row class="box-class" style="margin-top: 1%; height: 90%">
+			<el-table :data="tableData" border stripe max-height="60vh">
 				<el-table-column label="ID" prop="id" sortable></el-table-column>
 				<el-table-column label="时间" prop="createTime" sortable></el-table-column>
 				<el-table-column label="昵称" prop="name"></el-table-column>
@@ -48,6 +48,12 @@
 					</template>
 				</el-table-column>
 			</el-table>
+			<pagination
+				v-model:total="queryParams.pageTotal"
+				v-model:page="queryParams.pageNum"
+				v-model:limit="queryParams.pageSize"
+				@pagination="handlePagination">
+			</pagination>
 		</el-row>
 	</div>
 </template>
@@ -56,13 +62,17 @@
 import {getCurrentInstance, onMounted} from "vue";
 import {getList, confirmCheck, cancelCheck} from "@/api/MessageBoard"
 import DictTag from "@/components/DictTag/index.vue";
+import Pagination from "@/components/Pagination/index.vue";
 
 const {proxy} = getCurrentInstance();
 const { my_message_status } = proxy.useDict("my_message_status");
 //查询参数
 const queryParams = reactive({
 	status: undefined,
-	date: undefined
+	date: undefined,
+	pageTotal: 0,
+	pageNum: 1,
+	pageSize: 10
 });
 //日期选择
 const shortcuts = [
@@ -102,8 +112,15 @@ const submitSearch = () => {
 	// console.log(queryParams)
 	getList(queryParams).then(rp => {
 		// console.log(rp)
-		tableData.value = rp.data;
+		tableData.value = rp.data["rows"];
+		queryParams.pageTotal = rp.data["total"]
 	})
+}
+
+//分页
+const handlePagination=({page, limit})=>{
+	console.log(page, limit)
+	submitSearch()
 }
 
 const confirmCheckL=(id)=>{

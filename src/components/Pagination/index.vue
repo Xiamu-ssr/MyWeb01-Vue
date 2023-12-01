@@ -28,12 +28,12 @@ const props = defineProps({
   },
   limit: {
     type: Number,
-    default: 20
+    default: 5
   },
   pageSizes: {
     type: Array,
     default() {
-      return [10, 20, 30, 50]
+      return [10, 20, 50]
     }
   },
   // 移动端页码按钮的数量端默认值5
@@ -96,7 +96,7 @@ function handleCurrentChange(val) {
 
 <style scoped>
 .pagination-container {
-  background: #fff;
+  background: #ffffff00;
   padding: 32px 16px;
 }
 .pagination-container.hidden {

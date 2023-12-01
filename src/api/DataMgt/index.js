@@ -43,8 +43,8 @@ export function cancelImageText(params){
 export function getList(params){
     return request({
         url: '/DataMgt/getList',
-        method: 'post',
-        data:params
+        method: 'get',
+        params:params
     })
 }
 export function getImageTextById(id){

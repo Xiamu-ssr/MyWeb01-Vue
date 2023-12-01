@@ -45,7 +45,7 @@
 			</el-form>
 		</el-row>
 		<el-row class="box-class" style="margin-top: 1%; height: 79%">
-			<el-table :data="tableData" border stripe>
+			<el-table :data="tableData" border stripe max-height="60vh">
 				<el-table-column label="ID" prop="id" sortable></el-table-column>
 				<el-table-column label="地区" sortable>
 					<template #default="scope">
@@ -73,6 +73,12 @@
 					</template>
 				</el-table-column>
 			</el-table>
+			<pagination
+				v-model:total="queryParams.pageTotal"
+				v-model:page="queryParams.pageNum"
+				v-model:limit="queryParams.pageSize"
+				@pagination="handlePagination">
+			</pagination>
 		</el-row>
 		<!--    新建-->
 		<el-drawer v-model="drawer" :before-close="handleClose" direction="rtl" size="70%">
@@ -201,7 +207,7 @@
 import {getToken} from "@/utils/auth";
 import {Plus, Warning} from '@element-plus/icons-vue'
 import {ElMessageBox} from 'element-plus'
-import {getCurrentInstance, onMounted} from "vue";
+import {getCurrentInstance, onMounted, reactive} from "vue";
 import {
   cancelImageText,
   createImageText,
@@ -210,7 +216,8 @@ import {
   getImageTextById,
   getIndex2Geo,
   getList
-} from "@/api/DataMgt/index"
+} from "@/api/DataMgt"
+import Pagination from "@/components/Pagination/index.vue";
 
 const {proxy} = getCurrentInstance();
 //多选常量
@@ -223,7 +230,10 @@ const queryParams = reactive({
 	title: undefined,
 	text: undefined,
 	place: undefined,
-	date: undefined
+	date: undefined,
+	pageTotal: 0,
+	pageNum: 1,
+	pageSize: 10
 });
 //日期选择
 const shortcuts = [
@@ -292,7 +302,7 @@ const handleSuccess = (rp, file) => {
 //图片移除回调方法
 const handleRemove = (uploadFile, uploadFiles) => {
 	deletePic(uploadFile.name).then(rp => {
-		console.log(rp)
+		// console.log(rp)
 	})
 	// console.log(uploadFile, uploadFiles)
 }
@@ -304,19 +314,18 @@ const handlePictureCardPreview = (uploadFile) => {
 
 //查询
 const submitSearch = () => {
-	console.log(queryParams)
+	// console.log(queryParams)
 	getList(queryParams).then(rp => {
-		tableData.value = [];
-		for (let r of rp.data) {
-			console.log(r)
-			// r["date"] = new Date(r["date"]);
-			// r["date"] = r["date"].setHours(r["date"].getHours() - 14);
-			// r["date"] = new Date(r["date"]).toLocaleString();
-			// console.log(r)
-			tableData.value.push(r);
-		}
-		// tableData.value = rp.data;
+		// console.log(rp)
+		tableData.value = rp.data["rows"];
+		queryParams.pageTotal = rp.data["total"]
 	})
+}
+
+//分页
+const handlePagination=({page, limit})=>{
+	console.log(page, limit)
+	submitSearch()
 }
 
 //创建
@@ -325,7 +334,7 @@ const createNew = () => {
 		createParams.id = rp["msg"]
 		proxy.$modal.msg("创建");
 		drawer.value = true;
-		console.log(createParams)
+		// console.log(createParams)
 	})
 }
 
@@ -350,7 +359,7 @@ const handleClose = () => {
 				for (let c in createParams) {
 					createParams[c] = undefined;
 				}
-				console.log(createParams)
+				// console.log(createParams)
 				drawer.value = false
 			})
 		})
@@ -361,7 +370,7 @@ const handleClose = () => {
 //查看
 const viewOne = (id) => {
 	getImageTextById(id).then(rp => {
-		console.log(rp.data)
+		// console.log(rp.data)
 		oneInfoView.value = rp.data
 		imgList.value = Array.from(oneInfoView.value['images']).map(i => {
 			return viewImgUrl.value + '/' + i.name

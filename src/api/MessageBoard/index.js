@@ -19,8 +19,8 @@ export function getTopData(){
 export function getList(params){
     return request({
         url: '/MessageBoard/getList',
-        method: 'post',
-        data:params
+        method: 'get',
+        params:params
     })
 }
 
