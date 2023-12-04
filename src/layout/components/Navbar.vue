@@ -14,6 +14,8 @@
 			<el-col :span="8">
 				<div class="right-menu">
 					<template v-if="appStore.device !== 'mobile'">
+						<router-link :to="{path:'/noticeShow'}" style="margin-right: 2vw"><el-icon><ChatLineRound /></el-icon></router-link>
+
 						<header-search id="header-search" class="right-menu-item" style="margin-right: 1vw"/>
 
 						<el-tooltip v-if="false" content="源码地址" effect="dark" placement="bottom">

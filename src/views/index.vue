@@ -23,19 +23,21 @@
 <!--				program块-->
 				<el-row style="margin-top: 0%;height: 10%">
 					<el-col :span="12">
-						<el-row style="height: 100%">
-							<el-col :span="8">
-								<svg-icon icon-class="Home_01" style="width: 100%;height: 100%;"></svg-icon>
-							</el-col>
-							<el-col :span="16" style="display: flex;align-items: center">
-								<div>
-									<span style="font-size: 1.6vw;">
-										{{allData.programs }}
-									</span><br/>
-									<span style="font-size: 0.8vw">Programs</span>
-								</div>
-							</el-col>
-						</el-row>
+						<router-link :to="{path:'/portfolio'}">
+							<el-row style="height: 100%">
+								<el-col :span="8">
+									<svg-icon icon-class="Home_01" style="width: 100%;height: 100%;"></svg-icon>
+								</el-col>
+								<el-col :span="16" style="display: flex;align-items: center">
+									<div>
+										<span style="font-size: 1.6vw;">
+											{{allData.programs }}
+										</span><br/>
+										<span style="font-size: 0.8vw">Programs</span>
+									</div>
+								</el-col>
+							</el-row>
+						</router-link>
 					</el-col>
 					<el-col :span="12">
 						<el-row style="height: 100%">

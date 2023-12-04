@@ -20,6 +20,7 @@
 								range-separator="To"
 								start-placeholder="Start date"
 								type="daterange"
+								value-format="YYYY-MM-DD"
 								unlink-panels
 							/>
 						</el-form-item>
@@ -31,17 +32,21 @@
 			</el-form>
 		</el-row>
 		<el-row class="box-class" style="margin-top: 1%; height: 90%">
-			<el-table :data="tableData" border stripe max-height="60vh">
-				<el-table-column label="ID" prop="id" sortable></el-table-column>
-				<el-table-column label="时间" prop="createTime" sortable></el-table-column>
-				<el-table-column label="昵称" prop="name"></el-table-column>
-				<el-table-column label="内容" prop="text"></el-table-column>
-				<el-table-column label="状态" prop="status">
+			<el-table :data="tableData" border stripe max-height="60vh" @sort-change="handleSortChange">
+				<el-table-column label="ID" 		prop="id" 			width="120px"></el-table-column>
+				<el-table-column label="时间" 		prop="createTime"	width="160px"
+								 sortable="custom"
+								 :sort-orders="['ascending', 'descending']"
+				></el-table-column>
+				<el-table-column label="昵称" 		prop="name"></el-table-column>
+				<el-table-column label="内容" 		prop="text"></el-table-column>
+				<el-table-column label="链接地址"	prop="link"></el-table-column>
+				<el-table-column label="状态" 		prop="status" 		width="80px" align="center">
 					<template #default="scope">
 						<dict-tag :options="my_message_status" :value="scope.row.status"></dict-tag>
 					</template>
 				</el-table-column>
-				<el-table-column fixed="right" label="操作" width="240px">
+				<el-table-column label="操作" 							width="120px" align="center">
 					<template #default="scope">
 						<el-button type="primary" v-if="scope.row.status === '0'" @click="confirmCheckL(scope.row.id)" plain>通过</el-button>
 						<el-button type="danger" v-if="scope.row.status === '1'" @click="cancelCheckL(scope.row.id)" plain>不通过</el-button>
@@ -72,7 +77,9 @@ const queryParams = reactive({
 	date: undefined,
 	pageTotal: 0,
 	pageNum: 1,
-	pageSize: 10
+	pageSize: 10,
+	orderByColumn: 'createTime',
+	isAsc: 'descending',
 });
 //日期选择
 const shortcuts = [
@@ -109,7 +116,7 @@ const tableData = ref([])
 
 //查询
 const submitSearch = () => {
-	// console.log(queryParams)
+	console.log(queryParams)
 	getList(queryParams).then(rp => {
 		// console.log(rp)
 		tableData.value = rp.data["rows"];
@@ -121,6 +128,13 @@ const submitSearch = () => {
 const handlePagination=({page, limit})=>{
 	console.log(page, limit)
 	submitSearch()
+}
+
+//排序
+const handleSortChange=(column)=>{
+	queryParams.orderByColumn = column.prop;
+	queryParams.isAsc = column.order;
+	submitSearch();
 }
 
 const confirmCheckL=(id)=>{

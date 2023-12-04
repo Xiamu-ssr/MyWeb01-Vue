@@ -6,7 +6,7 @@
     transition: margin-left .28s;
     margin-left: $base-sidebar-width;
     position: relative;
-    *:not([style*="font-size"]) {
+    *:not([style*="font-size"]):not(.noAutoSize):not(.noAutoSize *) {
       font-size: 0.86vw;
     }
   }

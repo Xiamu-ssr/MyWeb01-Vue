@@ -20,6 +20,7 @@
 								end-placeholder="End date"
 								range-separator="To"
 								start-placeholder="Start date"
+								value-format="YYYY-MM-DD"
 								type="daterange"
 								unlink-panels
 							/>
@@ -87,7 +88,7 @@
 			</template>
 			<template #default>
 				<div class="box-class">
-					<form class="form-header-search">
+					<form>
 						<el-row>
 							<el-col :span="12">
 								<el-form-item label="标题">
@@ -161,7 +162,7 @@
 			<el-card>
 				<el-row>
 					<el-col :span="24">
-						<span style="font-size: 32px;font-weight: bold; font-family: 楷体">{{
+						<span style="font-size: 2vw;font-weight: bold; font-family: 楷体">{{
 								oneInfoView.title
 							}}</span>
 					</el-col>
@@ -173,22 +174,25 @@
 				</el-row>
 				<el-row>
 					<el-col :span="24">
-						<el-scrollbar max-height="400px" style="background: #3A71A855">
-							<el-image v-for="url in oneInfoView.images" :preview-src-list="imgList"
-									  :src="viewImgUrl+'/'+url.name"
-									  style="height: 50%;width: 50%">
-								<template #error>
-									<div>
-										<h2>Error</h2>
-									</div>
-								</template>
-							</el-image>
-						</el-scrollbar>
+						<el-carousel :interval="1500" style="width: 100%" type="card">
+							<el-carousel-item v-for="url in oneInfoView.images">
+								<el-image :preview-src-list="oneInfoView.imgList" :preview-teleported="true"
+										  :src="viewImgUrl+'/'+url.name"
+										  fit="scale-down"
+										  style="width: 100%;height: 100%">
+									<template #error>
+										<div class="image-slot">
+											<span>哎呀，图片被掉入黑洞啦</span>
+										</div>
+									</template>
+								</el-image>
+							</el-carousel-item>
+						</el-carousel>
 					</el-col>
 				</el-row>
 				<el-row>
 					<el-col :span="24">
-						<span style="font-size: 18px;font-family: 黑体">{{ oneInfoView.text }}</span>
+						<span style="font-size: 1.2vw;font-family: 黑体">{{ oneInfoView.text }}</span>
 					</el-col>
 				</el-row>
 			</el-card>
@@ -372,7 +376,7 @@ const viewOne = (id) => {
 	getImageTextById(id).then(rp => {
 		// console.log(rp.data)
 		oneInfoView.value = rp.data
-		imgList.value = Array.from(oneInfoView.value['images']).map(i => {
+		oneInfoView.value["imgList"] = Array.from(oneInfoView.value['images']).map(i => {
 			return viewImgUrl.value + '/' + i.name
 		})
 		// console.log(imgList.value)
@@ -400,7 +404,7 @@ onMounted(() => {
 :deep(.el-dialog) {
 	margin-top: auto !important;
 }
-:deep(.el-form-item){
+:deep(.form-header-search .el-form-item){
 	height: 5vh !important;
 	margin: 0 !important;
 	padding: 0 !important;
