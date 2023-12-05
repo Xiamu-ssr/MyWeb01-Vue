@@ -116,7 +116,7 @@ const tableData = ref([])
 
 //查询
 const submitSearch = () => {
-	console.log(queryParams)
+	// console.log(queryParams)
 	getList(queryParams).then(rp => {
 		// console.log(rp)
 		tableData.value = rp.data["rows"];

@@ -46,16 +46,19 @@
 			</el-form>
 		</el-row>
 		<el-row class="box-class" style="margin-top: 1%; height: 79%">
-			<el-table :data="tableData" border stripe max-height="60vh">
-				<el-table-column label="ID" prop="id" sortable></el-table-column>
-				<el-table-column label="地区" sortable>
+			<el-table :data="tableData" border stripe max-height="60vh" @sort-change="handleSortChange">
+				<el-table-column label="ID" 	prop="id"></el-table-column>
+				<el-table-column label="地区">
 					<template #default="scope">
 						{{ i2g[scope.row.place] }}
 					</template>
 				</el-table-column>
-				<el-table-column label="时间" prop="date" sortable></el-table-column>
-				<el-table-column label="标题" prop="title"></el-table-column>
-				<el-table-column fixed="right" label="操作" width="240px">
+				<el-table-column label="时间" 	prop="createTime"
+								 sortable="custom"
+								 :sort-orders="['ascending', 'descending']"
+				></el-table-column>
+				<el-table-column label="标题" 	prop="title"></el-table-column>
+				<el-table-column label="操作" 					width="240px">
 					<template #default="scope">
 						<el-button type="primary" @click="viewOne(scope.row.id)">查看</el-button>
 						<el-popconfirm
@@ -237,7 +240,9 @@ const queryParams = reactive({
 	date: undefined,
 	pageTotal: 0,
 	pageNum: 1,
-	pageSize: 10
+	pageSize: 10,
+	orderByColumn: 'createTime',
+	isAsc: 'descending',
 });
 //日期选择
 const shortcuts = [
@@ -290,7 +295,6 @@ const uploadImgUrl = ref(import.meta.env.VITE_APP_BASE_API + '/DataMgt/uploadPic
 //动态查看
 const oneInfoView = ref({})
 const viewImgUrl = ref(import.meta.env.VITE_APP_BASE_API + '/images'); // 上传的图片服务器地址
-const imgList = ref([])
 
 //图片上传前回调方法
 const handlePicBeforeUpload = (file) => {
@@ -320,7 +324,7 @@ const handlePictureCardPreview = (uploadFile) => {
 const submitSearch = () => {
 	// console.log(queryParams)
 	getList(queryParams).then(rp => {
-		// console.log(rp)
+		console.log(rp)
 		tableData.value = rp.data["rows"];
 		queryParams.pageTotal = rp.data["total"]
 	})
@@ -330,6 +334,13 @@ const submitSearch = () => {
 const handlePagination=({page, limit})=>{
 	console.log(page, limit)
 	submitSearch()
+}
+
+//排序
+const handleSortChange=(column)=>{
+	queryParams.orderByColumn = column.prop;
+	queryParams.isAsc = column.order;
+	submitSearch();
 }
 
 //创建
