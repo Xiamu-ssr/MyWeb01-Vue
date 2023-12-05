@@ -1,14 +1,8 @@
 <p align="center">
-	<img alt="logo" src="https://oscimg.oschina.net/oscnet/up-d3d0a9303e11d522a06cd263f3079027715.png">
-
+	<img alt="logo" src="https://github.com/Xiamu-ssr/MyWeb01-Vue/assets/77220168/750e8f54-86e1-4863-a349-227fe157dd2a">
 </p>
-<h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">RuoYi v3.8.6</h1>
-<h4 align="center">基于SpringBoot+Vue3前后端分离的Java快速开发框架</h4>
-<p align="center">
-	<a href="https://gitee.com/y_project/RuoYi-Vue/stargazers"><img src="https://gitee.com/y_project/RuoYi-Vue/badge/star.svg?theme=dark"></a>
-	<a href="https://gitee.com/y_project/RuoYi-Vue"><img src="https://img.shields.io/badge/RuoYi-v3.8.6-brightgreen.svg"></a>
-	<a href="https://gitee.com/y_project/RuoYi-Vue/blob/master/LICENSE"><img src="https://img.shields.io/github/license/mashape/apistatus.svg"></a>
-</p>
+<h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">Our遇 v1.0.0</h1>
+<h4 align="center">基于SpringBoot+Vue3前后端分离的个人网站</h4>
 
 ## 前端运行
 
@@ -23,3 +17,6 @@ yarn dev
 # 构建生产环境 yarn build:prod
 # 前端访问地址 http://localhost:80
 ```
+
+## 文档
+[所有资料、文档，请看这里](https://github.com/Xiamu-ssr/MyWeb01-Doc)
