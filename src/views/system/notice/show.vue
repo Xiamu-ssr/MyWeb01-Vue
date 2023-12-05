@@ -5,7 +5,7 @@
 				<el-timeline>
 					<el-timeline-item
 						v-for="activity in activities"
-						:timestamp="activity['updateTime']"
+						:timestamp="activity['createTime']"
 						placement="top"
 						:hollow="activity['hollow']"
 						:size="activity['size']"

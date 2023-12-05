@@ -11,6 +11,9 @@
 							</el-scrollbar>
 							<div style="padding: 1vw">
 								<span style="font-family: '方正粗黑宋简体';font-size: 1.6vw;">{{ item['title'] }}</span>
+								<div >
+									<el-tag v-for="t in item['tags']" style="margin-right: 1vw" >{{ t }}</el-tag>
+								</div>
 							</div>
 						</el-card>
 					</el-col>
@@ -27,6 +30,7 @@ import { getToken } from "@/utils/auth";
 import {getCurrentInstance, nextTick, onMounted, reactive, ref} from "vue";
 import {createNew, getList, deletById} from "@/api/Portfolio"
 import {InfoFilled} from "@element-plus/icons-vue";
+import {randomTagStyle} from "@/api/utils";
 
 const {proxy} = getCurrentInstance();
 //图片数据
